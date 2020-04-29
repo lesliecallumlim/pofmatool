@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './App.css';
 // Import charts
 import ResultChart from './components/charts.jsx';
@@ -6,15 +6,6 @@ import Highcharts from 'highcharts/highstock'
 
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0);
-
-
-  useEffect(() => {
-    fetch('/time').then(res => res.json()).then(data => {
-      setCurrentTime(data.time);
-    });
-  }, []);
-
   return (
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">

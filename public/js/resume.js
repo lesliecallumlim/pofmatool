@@ -28,36 +28,3 @@
 })(jQuery); // End of use strict
 
 
-
-document.addEventListener('DOMContentLoaded', function () {
-  
-  Highcharts.setOptions
-  ({
-    chart: 
-    {
-      style:
-      {
-        fontSize: '18px',
-      }
-    }
-  });
-
-  Highcharts.chart('chart', {
-  chart: { type: 'column' },
-  title: { text: null },
-  xAxis: { categories: ['Twitter', 'Facebook', 'Instagram'] },
-  yAxis: { min: 0, max: 100, title: { text: 'Percentage of Fake/Real News' }, labels: { formatter: function() { return this.value + '%'; } }},
-  credits: { enabled: false },
-  plotOptions: { 
-	column: { 
-		dataLabels: { enabled: true, style: { textOutline: false }, formatter: function() { return this.y + '%'; } },
-	        stacking: 'normal',
-	} 
-  },
-  series: [
-	{ name: 'Fake', color: '#FB9039', data: [30, 40, 20] },
-	{ name: 'Real', color: '#1F3044', data: [70, 60, 80] }],
-  
-  tooltip: { formatter: function() { return this.series.name + ": " + this.y + "%"; }},
-})
-});

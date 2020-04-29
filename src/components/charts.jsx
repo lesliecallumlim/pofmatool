@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Highcharts, { arrayMax } from 'highcharts'
+import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import axios from 'axios';
 

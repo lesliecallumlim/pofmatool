@@ -1,5 +1,6 @@
 import time
-from flask import Flask
+from flask import Flask, request, jsonify
+from scraper import scraper
 
 app = Flask(__name__)
 # Flask now automatically returns a python dictionary in json strings
@@ -27,3 +28,10 @@ def get_results():
                 },
     }
     return {'results' : _result}
+
+@app.route('/evaluate', methods = ['POST'])
+def evaluate_link():
+    url = request.get_json().get('search')
+    _scraper = scraper(url)
+    _scraper = jsonify(results = _scraper, url = url)
+    return _scraper

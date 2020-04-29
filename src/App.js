@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 // Import charts
 import ResultChart from './components/charts.jsx';
+import Search from './components/search.jsx';
 import Highcharts from 'highcharts/highstock'
 
 
@@ -37,10 +38,10 @@ function App() {
         <section className="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
           <div className="w-100">
             <h1 className="mb-0">POFMA
-              <span className="text-primary">Checker</span>
+              <span className="text-primary"> Checker</span>
             </h1>
             <div className="subheading mb-5">
-              A rumour detection platform which seeks to identify falsehoods that widely witnessed in social media.
+              A rumour detection platform which seeks to identify falsehoods that are widely witnessed in social media.
             </div>
             <div className="subheading mb-5">
           <p className="lead mb-5">
@@ -49,13 +50,8 @@ function App() {
           </p>
           </div>
           <p className="subheading mb-5"></p>
-            <div className="form-group">
-              <div className="input-group">
-                <input type="text" name="search" className="form-control" placeholder="Validate your results today!"></input>
-                <span><button type="submit" className="btn btn-primary"><i className="fa fa-search"></i></button></span>
-              </div>
-            </div>
-          <hr className="m-2"></hr>
+            <Search />
+          <hr className="mb-2"></hr>
             <div className="social-icons">
               <a href="mailto:hello@lesliecallum.com">
                 <i className="fa fa-envelope"></i>
@@ -73,7 +69,7 @@ function App() {
               <div className="resume-content">
                 <h3 className="mb-0">A React and Flask Framework</h3>
                 <img src="img/concept.png" alt="framework" className="responsive"></img>
-                <div className = "subheading mb-3">The Process</div>
+                <div className = "subheading m-1">The Process</div>
                 <hr></hr>
                 <ol>
                   <li> The web application first sends a request to Flask. </li>
@@ -84,7 +80,14 @@ function App() {
                   <li> Flask then returns the results in a JSON payload. </li>
                   <li> The web application will then proceed to parse the JSON string, and visualise the results. </li>
                 </ol>
+              <div className = "subheading m-1">Current Limitations</div>
+              <hr></hr>
+              <ol>
+                <li>The supported social media platforms as of now are: Facebook.</li>
+                <li>The machine learning model are not updated on the fly but rather periodically due to the overheads and the ambiguity involved.</li>
+              </ol>
               </div>
+              
             </div>
       </div>
       </section>

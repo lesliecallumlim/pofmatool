@@ -36,7 +36,7 @@ class ResultChart extends Component {
       return <p>Loading ...</p>;
     }
 
-    // A bit spaghetti - to refactor
+    // TODO: To refactor
     let platforms = []; let fake_news = [];  let real_news = [];
     Object.keys(data).forEach(function(key) {
       platforms.push(data[key]['platform']);

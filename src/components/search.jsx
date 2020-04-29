@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import './../App.css';
 
@@ -10,6 +11,7 @@ class Search extends Component {
             results: '',            
             url: '',
             percentage: 0,
+            loading: false
         }
     }
 
@@ -20,15 +22,18 @@ class Search extends Component {
 
     formHandler(e) {
         let currentComponent = this;
+        currentComponent.setState({loading: true});
         e.preventDefault();
         const formFields = this.state;
         axios.post('/evaluate', formFields)
             .then(function(response) {
                 const _results = response.data;
+                currentComponent.setState({loading: false})
                 currentComponent.setState({results: _results.results})
                 currentComponent.setState({url: _results.url})
             })
             .catch(function(error){
+                currentComponent.setState({loading: false})
                 currentComponent.setState({results: error})
             })
         ;
@@ -47,9 +52,19 @@ class Search extends Component {
                     <p>{this.state.url}</p>
                     <h4>Text: </h4>
                     <p>{this.state.results}</p>
-                    <h4>Falsehood Possibility: </h4>
+                    <h4>Falsehood Probability: </h4>
                     <p>{this.state.percentage}%</p>
                 </div>
+        }
+        if (this.state.loading) {
+            analysis = 
+            <div>
+                <hr className = "mb-3"></hr>
+                <h3 className="mb-2">Your result </h3> 
+                <Spinner animation="grow" variant="dark">
+                <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
         }
         return(
             <div>

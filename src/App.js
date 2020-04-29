@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
+// Import charts
+import ResultChart from './components/charts.jsx';
+import Highcharts from 'highcharts/highstock'
+
 
 function App() {
   const [currentTime, setCurrentTime] = useState(0);
+
 
   useEffect(() => {
     fetch('/time').then(res => res.json()).then(data => {
@@ -98,9 +102,7 @@ function App() {
       <section className="resume-section p-3 p-lg-5 d-flex align-items-left" id="statistics">
       <div className="w-100">
             <h2 className="mb-5">Statistics</h2>
-            <div className="subheading mb-3">Number of falsehoods in the various social media platforms:</div>
-            <div id="chart" style = {{ height: 400 + 'px', width: 600 + 'px' }}></div>
-      <p>The current time is {currentTime}.</p>
+            <ResultChart highcharts={Highcharts} />
         </div>
       </section>
     </div>

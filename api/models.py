@@ -21,8 +21,8 @@ class Link(db.Model, Serializer):
     f_deleted = db.Column(db.Boolean, default = False)
 
     @classmethod
-    def get_past_records(cls, records = 5): 
-        records = cls.query.filter(cls.f_deleted != True).limit(records) 
+    def get_past_records(cls, records = 30): 
+        records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).limit(records)
         return Link.serialize_list(records)
     def add_link(url, platform, text, fraud_probability = 0):
         _link = Link(url = url, text = text, platform = platform, fraud_probability = fraud_probability)

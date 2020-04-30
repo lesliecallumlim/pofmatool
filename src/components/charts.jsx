@@ -3,7 +3,6 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import axios from 'axios';
 
-
 class ResultChart extends Component {
   constructor(props) {
     super(props);
@@ -52,6 +51,8 @@ class ResultChart extends Component {
         { name: 'Real News', color: '#1F3044', data: real_news }
       ],
       
+      credits: false,
+      
       xAxis: { categories: platforms},
       yAxis: { min: 0, max: 100, title: { text: 'Percentage of Fake/Real News' }, labels: { formatter: function() { return this.value + '%'; } }},
       
@@ -61,7 +62,6 @@ class ResultChart extends Component {
                 stacking: 'normal',
         },
 
-      credits: { enabled: false },
 
       },
       tooltip: { formatter: function() { return this.series.name + ": " + this.y + "%"; }},

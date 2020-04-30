@@ -4,10 +4,6 @@ from scraper import scraper
 
 app = Flask(__name__)
 # Flask now automatically returns a python dictionary in json strings
-@app.route('/api/time')
-def get_current_time():
-    return {'time': time.time()}
-
 @app.route('/api/results')
 def get_results():
     # Placeholder for testing

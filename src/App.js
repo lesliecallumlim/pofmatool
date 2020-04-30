@@ -4,37 +4,14 @@ import './App.css';
 import ResultChart from './components/charts.jsx';
 import Search from './components/search.jsx';
 import Highcharts from 'highcharts/highstock'
+import ScrollspyNav from "react-scrollspy-nav";
 
 
 function App() {
   return (
+    
     <div className="App">
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-        <a className="navbar-brand js-scroll-trigger" href="#page-top">
-        <span className="d-block d-lg-none">pofma checker</span>
-        <span className="d-none d-lg-block">
-            <img className="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/logo.png"></img>
-        </span>
-        </a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <a className="nav-link js-scroll-trigger" href="#about">About</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link js-scroll-trigger" href="#methodology">Methodology</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link js-scroll-trigger" href="#statistics">Statistics</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-
-      <div className="container-fluid p-0">
+      <div className="container-fluid p-0" >
         <section className="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
           <div className="w-100">
             <h1 className="mb-0">POFMA
@@ -92,6 +69,33 @@ function App() {
       </div>
       </section>
 
+      
+    <ScrollspyNav scrollTargetIds ={ ['about', 'methodology', 'statistics'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <a className="navbar-brand" href="#page-top">
+        <span className="d-block d-lg-none">pofma checker</span>
+        <span className="d-none d-lg-block">
+            <img className="img-fluid img-profile rounded-circle mx-auto mb-2" src="img/logo.png"></img>
+        </span>
+        </a>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <a className="nav-link active" href="#about">About</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#methodology">Methodology</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#statistics">Statistics</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
       <hr className="m-0"></hr>
       <section className="resume-section p-3 p-lg-5 d-flex align-items-left" id="statistics">
       <div className="w-100">
@@ -99,6 +103,7 @@ function App() {
             <ResultChart highcharts={Highcharts} />
         </div>
       </section>
+      
     </div>
   );
 }

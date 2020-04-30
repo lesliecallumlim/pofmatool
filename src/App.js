@@ -10,13 +10,13 @@ function App() {
   return (
     <div className="App">
       <div className="container-fluid p-0" >
-        <section className="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
+        <section className="site-section p-3 p-lg-5 d-flex align-items-center" id="about">
           <div className="w-100">
-            <h1 className="mb-0">POFMA
-              <span className="text-primary"> Checker</span>
+            <h1 className="mb-3">pofma
+              <span className="text-primary"> checker</span>
             </h1>
             <div className="subheading mb-5">
-              A rumour detection platform which seeks to identify falsehoods that are widely witnessed in social media.
+              a rumour detection platform which seeks to identify falsehoods that are widely witnessed in social media.
             </div>
             <div className="subheading mb-5">
           <p className="lead mb-5">
@@ -37,29 +37,29 @@ function App() {
       </div>
 
       <hr className="m-0"></hr>
-      <section className="resume-section p-3 p-lg-5 d-flex justify-content-center" id="methodology">
+      <section className="site-section p-3 p-lg-5 d-flex justify-content-center" id="methodology">
       <div className="w-100">
-          <h2 className="mb-5">Methodology</h2>
-            <div className="resume-item d-flex flex-column flex-md-row justify-content-between mb-5">
-              <div className="resume-content">
-                <h3 className="mb-0">A React and Flask Framework</h3>
-                <img src="img/concept.png" alt="framework" className="responsive"></img>
-                <div className = "subheading m-1">The Process</div>
+          <h2 className="mb-5">methodology</h2>
+            <div className="site-item d-flex flex-column flex-md-row justify-content-between mb-5">
+              <div className="site-content">
+                <img src="img/concept.png" alt="framework" className="responsive mb-4"></img>
+                <h4 className="mb-4 center">A React and Flask Framework</h4>
+                <div className = "subheading m-3"><h3>the process</h3></div>
                 <hr></hr>
-                <ol>
-                  <li> The web application first sends a request to Flask. </li>
-                  <li> Flask then communicates with the backend python modules with the parameters of the request. </li>
-                  <li> The backend modules then process the requests, and if necessary, pulls the data from the database.  </li>
-                  <li> If data is needed from the database, the data will be returned to the backend python modules. </li>
-                  <li> The backend modules then return the results to flask. </li>
-                  <li> Flask then returns the results in a JSON payload. </li>
-                  <li> The web application will then proceed to parse the JSON string, and visualise the results. </li>
+                <ol className = "mb-4">
+                  <li>The web application first sends a request to Flask. </li>
+                  <li>Flask then communicates with the backend python modules with the parameters of the request. </li>
+                  <li>The backend modules then process the requests, and if necessary, pulls the data from the database.  </li>
+                  <li>If data is needed from the database, the data will be returned to the backend python modules. </li>
+                  <li>The backend modules then return the results to flask. </li>
+                  <li>Flask then returns the results in a JSON payload. </li>
+                  <li>The web application proceeds to parse the JSON string and visualise the results. </li>
                 </ol>
-              <div className = "subheading m-1">Current Limitations</div>
+              <div className = "subheading m-3"><h3>current limitations</h3></div>
               <hr></hr>
               <ol>
-                <li>The current supported social media platforms as of now are: Facebook, Instagram, and Twitter.</li>
-                <li>The machine learning model are not updated on the fly but rather periodically due to the overheads and the ambiguity involved.</li>
+                <li>The supported social media platforms as of now are: Facebook, Instagram, and Twitter.</li>
+                <li>The machine learning model are not updated on the fly but rather updated periodically due to the overheads and the ambiguity involved.</li>
               </ol>
               </div>
               
@@ -97,14 +97,14 @@ function App() {
       </nav>
 
       <hr className="m-0"></hr>
-      <section className="resume-section p-3 p-lg-5 d-flex align-items-left" id="statistics">
+      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="statistics">
         <div className="w-100">
               <h2 className="mb-5">Statistics</h2>
               <ResultChart highcharts={Highcharts} />
           </div>
       </section>
       <hr className="m-0"></hr>
-      <section className="resume-section p-3 p-lg-5 d-flex align-items-left" id="records">
+      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="records">
         <div className="w-100">
           <h2 className="mb-5">Past Analysis</h2>
           <Records />

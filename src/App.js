@@ -83,7 +83,7 @@ function App() {
               <div className = "subheading m-1">Current Limitations</div>
               <hr></hr>
               <ol>
-                <li>The supported social media platforms as of now are: Facebook.</li>
+                <li>The current supported social media platforms as of now are: Facebook, Instagram, and Twitter.</li>
                 <li>The machine learning model are not updated on the fly but rather periodically due to the overheads and the ambiguity involved.</li>
               </ol>
               </div>

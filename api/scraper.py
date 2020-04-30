@@ -13,8 +13,9 @@ def scraper(url):
     if re.search(regex_pattern, url):
         options = webdriver.ChromeOptions()
         # if you want headless
-        options.add_argument('headless') 
-        driver = webdriver.Chrome(options = options)
+        options.add_argument('headless')         
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
         driver.get(url)
         if re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{facebook})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
             elements = driver.find_element_by_xpath('//div[@data-testid="post_message"]').text

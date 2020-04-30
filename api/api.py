@@ -30,7 +30,7 @@ def get_results():
 @app.route('/api/evaluate', methods = ['POST'])
 def evaluate_link():
     url = request.get_json().get('search')
-    url = str(url)
+    url = str(url).strip()
     results = scraper(url)    
     #TODO: Split the database function into a separate function instead
     #TODO: Create a custom try catch block for invalid URLs

@@ -14,8 +14,6 @@ class Search extends Component {
             loading: false
         }
     }
-
-
     inputChangeHandler(e) {
         this.setState({search: e.target.value });
     }

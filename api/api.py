@@ -11,23 +11,24 @@ def get_current_time():
 @app.route('/results')
 def get_results():
     # Placeholder for testing
-    _result = {   "source1" : 
-                { "platform" : "Twitter",
-                  "fake_news" : 30,
-                  "real_news" : 70,  
-                },
-                "source2" : 
-                { "platform" : "Facebook",
-                  "fake_news" : 35,
-                  "real_news" : 65,  
-                },
-                "source3" : 
-                { "platform" : "LinkedIn",
-                  "fake_news" : 20,
-                  "real_news" : 80,  
-                },
+    _result = {   
+      "source1": { 
+        "platform"  : "Twitter",
+        "fake_news" : 30,
+        "real_news" : 70,  
+      },
+      "source2": { 
+        "platform"  : "Facebook",
+        "fake_news" : 35,
+        "real_news" : 65,  
+      },
+      "source3": { 
+        "platform" : "LinkedIn",
+        "fake_news" : 20,
+        "real_news" : 80,  
+      },
     }
-    return {'results' : _result}
+    return {'results': _result}
 
 @app.route('/evaluate', methods = ['POST'])
 def evaluate_link():

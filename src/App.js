@@ -2,14 +2,12 @@ import React from 'react';
 import './App.css';
 // Import charts
 import ResultChart from './components/charts.jsx';
+import Records from './components/records.jsx';
 import Search from './components/search.jsx';
 import Highcharts from 'highcharts/highstock'
-import ScrollspyNav from "react-scrollspy-nav";
-
-
+import ScrollspyNav from 'react-scrollspy-nav';
 function App() {
   return (
-    
     <div className="App">
       <div className="container-fluid p-0" >
         <section className="resume-section p-3 p-lg-5 d-flex align-items-center" id="about">
@@ -69,8 +67,7 @@ function App() {
       </div>
       </section>
 
-      
-    <ScrollspyNav scrollTargetIds ={ ['about', 'methodology', 'statistics'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
+    <ScrollspyNav scrollTargetIds ={ ['about', 'methodology', 'statistics', 'records'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
         <a className="navbar-brand" href="#page-top">
         <span className="d-block d-lg-none">pofma checker</span>
@@ -92,18 +89,27 @@ function App() {
             <li className="nav-item">
               <a className="nav-link" href="#statistics">Statistics</a>
             </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#records">History</a>
+            </li>
           </ul>
         </div>
       </nav>
 
       <hr className="m-0"></hr>
       <section className="resume-section p-3 p-lg-5 d-flex align-items-left" id="statistics">
-      <div className="w-100">
-            <h2 className="mb-5">Statistics</h2>
-            <ResultChart highcharts={Highcharts} />
+        <div className="w-100">
+              <h2 className="mb-5">Statistics</h2>
+              <ResultChart highcharts={Highcharts} />
+          </div>
+      </section>
+      <hr className="m-0"></hr>
+      <section className="resume-section p-3 p-lg-5 d-flex align-items-left" id="records">
+        <div className="w-100">
+          <h2 className="mb-5">Past Analysis</h2>
+          <Records />
         </div>
       </section>
-      
     </div>
   );
 }

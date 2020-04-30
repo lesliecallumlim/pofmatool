@@ -75,4 +75,4 @@ class ResultChart extends Component {
   }
 }
 
-  export default ResultChart;
+export default ResultChart;

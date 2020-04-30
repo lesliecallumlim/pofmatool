@@ -25,7 +25,7 @@ class Search extends Component {
         currentComponent.setState({loading: true});
         e.preventDefault();
         const formFields = this.state;
-        axios.post('/evaluate', formFields)
+        axios.post('/api/evaluate', formFields)
             .then(function(response) {
                 const _results = response.data;
                 currentComponent.setState({loading: false})

@@ -17,7 +17,7 @@ class ResultChart extends Component {
   async componentDidMount() {
     this.setState({isLoading : true});
     try {
-      const result = await axios.get('/results');
+      const result = await axios.get('/api/results');
       this.setState({ data : result.data.results, isLoading: false});
     }
     catch (error) {

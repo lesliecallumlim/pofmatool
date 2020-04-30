@@ -4,11 +4,11 @@ from scraper import scraper
 
 app = Flask(__name__)
 # Flask now automatically returns a python dictionary in json strings
-@app.route('/time')
+@app.route('/api/time')
 def get_current_time():
     return {'time': time.time()}
 
-@app.route('/results')
+@app.route('/api/results')
 def get_results():
     # Placeholder for testing
     _result = {   
@@ -30,7 +30,7 @@ def get_results():
     }
     return {'results': _result}
 
-@app.route('/evaluate', methods = ['POST'])
+@app.route('/api/evaluate', methods = ['POST'])
 def evaluate_link():
     url = request.get_json().get('search')
     _scraper = scraper(url)

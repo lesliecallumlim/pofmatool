@@ -80,8 +80,9 @@ li {
 .social-icons a:last-child {
   margin-right: 0;
 }
-.social-icons a:hover {
-  background-color: #FB9039;
+.social-icons a:hover, .btn:hover {
+  background-color: #FB9039 !important;
+  border-color: #FB9039;
 }
 .btn-primary {
   display: inline-block;

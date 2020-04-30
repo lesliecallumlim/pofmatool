@@ -12,6 +12,7 @@ function App() {
       <div className="container-fluid p-0" >
         <section className="site-section p-3 p-lg-5 d-flex align-items-center" id="about">
           <div className="w-100">
+            <div className = "mb-5"></div>
             <h1 className="mb-3">pofma
               <span className="text-primary"> checker</span>
             </h1>
@@ -66,7 +67,22 @@ function App() {
             </div>
       </div>
       </section>
-
+      <hr className="m-0"></hr>
+      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="statistics">
+        <div className="w-100">
+              <h2 className="mb-5">Statistics</h2>
+              <ResultChart highcharts={Highcharts} />
+             <i>Only news that are classified with 70% probability threshold are part of the tabulation for fake news. </i> 
+          </div>
+      </section>
+      <hr className="m-0"></hr>
+      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="records">
+        <div className="w-100">
+          <h2 className="mb-5">Past Analysis</h2>
+          <Records />
+        </div>
+      </section>
+      
     <ScrollspyNav scrollTargetIds ={ ['about', 'methodology', 'statistics', 'records'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
         <a className="navbar-brand" href="#page-top">
@@ -95,21 +111,6 @@ function App() {
           </ul>
         </div>
       </nav>
-
-      <hr className="m-0"></hr>
-      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="statistics">
-        <div className="w-100">
-              <h2 className="mb-5">Statistics</h2>
-              <ResultChart highcharts={Highcharts} />
-          </div>
-      </section>
-      <hr className="m-0"></hr>
-      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="records">
-        <div className="w-100">
-          <h2 className="mb-5">Past Analysis</h2>
-          <Records />
-        </div>
-      </section>
     </div>
   );
 }

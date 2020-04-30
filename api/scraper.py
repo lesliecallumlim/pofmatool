@@ -29,7 +29,8 @@ def scraper(url):
                 time.sleep(2) #TODO: Use Wait instead of an arbitary sleep function
                 elements = driver.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div/div/section/div/div/div[1]/div/div/div/article/div/div[3]/div[1]/div/span').text
                 platform = 'Twitter'
-            contents["text"] = elements.replace('\n',' ')      
+            contents["text"] = elements.replace('\n',' ')
+            contents["platform"] = platform      
         except:
             contents["text"] = 'Invalid platform link!'
         # End session

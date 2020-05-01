@@ -59,8 +59,9 @@ function App() {
               <div className = "subheading m-3"><h3>current limitations</h3></div>
               <hr></hr>
               <ol>
-                <li>The supported social media platforms as of now are: Facebook, Instagram, and Twitter.</li>
-                <li>The machine learning model are not updated on the fly but rather updated periodically due to the overheads and the ambiguity involved.</li>
+                <li>Only supported social media sites will be scraped and analysed. This is due to the inherent differences when it comes to the web structure. Users, however, can alternatively submit content to be analysed through the same search functionality.  </li>
+                <li>TThe machine learning algorithm will not be updated on the fly. This is due to the overheads involved when it comes to model generation, and issues with model accuracy would be prevalent should the model be continuously reinforced with its own results. </li>
+                <li>The platform will only support URL(s) that are linked directly to the content. This means that the platform will not scrape for all posts made by a user.  </li>
               </ol>
               </div>
               

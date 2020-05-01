@@ -83,11 +83,12 @@ li {
 }
 .social-icons a:hover, .btn:hover {
   background-color: #FB9039 !important;
-  border-color: #FB9039;
+  border-color: #FB9039 !important;
+  /* border: 1px; */
 }
 .btn-primary {
   display: inline-block;
-  background-color: #1F3044;
+  background-color: #1F3044 !important;
   color: #fff !important;
   text-align: center;
 }
@@ -100,6 +101,30 @@ li {
 
 img:hover {
   opacity: 0.8;
+}
+
+button:focus {
+  outline:0 !important;
+  box-shadow: none!important;
+}
+input {
+  /* background-color: #FB9039 !important; */
+  /* border-color: #1F3044 !important; */
+}
+
+input:focus {
+  /* background-color: #FB9039 !important; */
+  border-color: #FB9039 !important;
+}
+
+button:active {
+  outline:0 !important;
+  box-shadow: none!important;
+}
+
+.form-control {
+  box-shadow: none!important;
+  background-color: transparent;
 }
 
 #sideNav .navbar-nav .nav-item .nav-link {

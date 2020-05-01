@@ -13,8 +13,8 @@ function App() {
         <section className="site-section p-3 p-lg-5 d-flex align-items-center" id="about">
           <div className="w-100">
             <div className = "mb-5"></div>
-            <h1 className="mb-3">pofma
-              <span className="text-primary"> checker</span>
+            <h1 className="mb-3">pofma.
+              <span className="text-primary">me</span>
             </h1>
             <div className="subheading mb-5">
               a rumour detection platform which seeks to identify falsehoods that are widely witnessed in social media.
@@ -22,7 +22,7 @@ function App() {
             <div className="subheading mb-5">
           <p className="lead mb-5">
             With online falsehood creating distrust and unnecessary panic in our society, a social media rumour detection platform is needed to steer users away from the dissemination of fake news. 
-            As such, a rumour detection platform is created in hopes to address these concerns, and reduce the number of falsehood being perpetuated in the world today.
+            As a result, a rumour detection platform is created in hopes to address these concerns and reduce the amount of falsehood perpetuated in the world today.
           </p>
           </div>
           <p className="subheading mb-5"></p>
@@ -78,7 +78,7 @@ function App() {
       <hr className="m-0"></hr>
       <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="records">
         <div className="w-100">
-          <h2 className="mb-5">Past Analysis</h2>
+          <h2 className="mb-5">Past Analyses</h2>
           <Records />
         </div>
       </section>

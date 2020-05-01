@@ -25,12 +25,13 @@ class Records extends Component {
 
   renderTableData() {
     return this.state.data.map((data, index) => {
-       const { date_added, fraud_probability, id, platform, text, url } = data //destructuring
+       const { date_added, fraud_probability, id, platform, text, url, sentiments } = data //destructuring
        return (
           <tr key={id}>
              <td>{platform}</td>
              <td>{url}</td>
              {/* <td>{text}</td> */}
+             <td>{sentiments}</td>
              <td>{fraud_probability}%</td>
              <td>{date_added}</td>
           </tr>
@@ -59,6 +60,7 @@ class Records extends Component {
                 <th>Platform</th>
                 <th>URL</th>
                 {/* <th>Text</th> */}
+                <th>Sentiments</th>
                 <th>Falsehood (%)</th>
                 <th>Date Added</th>
               </tr>

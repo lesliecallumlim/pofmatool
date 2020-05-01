@@ -11,7 +11,8 @@ class Search extends Component {
             results: '',            
             url: '',
             percentage: 0,
-            loading: false
+            loading: false,
+            sentiments: ['hate speech', 'partisan views']
         }
     }
     inputChangeHandler(e) {
@@ -41,6 +42,8 @@ class Search extends Component {
         let analysis;
         if (!this.state.results == "")
         {
+
+            const sentimentList =  this.state.sentiments;
             // Let's show certain elements only when used  
             analysis = 
                 <div>
@@ -52,6 +55,15 @@ class Search extends Component {
                     <p>{this.state.results}</p>
                     <h4>Falsehood Probability: </h4>
                     <p>{this.state.percentage}%</p>
+                    <h4>Sentiments: </h4>
+                    {/* Display tag for sentiments. TODO: Classify colors based on sentiment */}
+                    {   sentimentList.map(function(sentiment) {
+                        return <span class="badge badge-danger p-2 mr-1 mb-3">{sentiment}</span>
+                    })}
+                    <h4>What do you think?</h4>
+                    <button class = "btn badge badge-success p-2 mr-1 mb-3">Excellent!</button>
+                    <button class = "btn badge badge-warning p-2 mr-1 mb-3">More work to be done!</button>
+                    <button class = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button>
                 </div>
         }
         if (this.state.loading) {

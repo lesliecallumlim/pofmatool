@@ -1,0 +1,9 @@
+pip3 install chromedriver-binary==81.0.4044.69.0
+pip3 install selenium
+pip3 install flask
+
+
+sudo apt-get install nodejs
+sudo apt-get install npm
+npm install-g yarn
+npm install

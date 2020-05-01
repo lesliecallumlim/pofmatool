@@ -59,7 +59,7 @@ class Records extends Component {
                 <th>Platform</th>
                 <th>URL</th>
                 {/* <th>Text</th> */}
-                <th>Fraud Probability</th>
+                <th>Falsehood (%)</th>
                 <th>Date Added</th>
               </tr>
                 {this.renderTableData()}

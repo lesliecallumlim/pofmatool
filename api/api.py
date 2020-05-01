@@ -36,7 +36,6 @@ def evaluate_link():
     #TODO: Create a custom try catch block for invalid URLs
     if 'platform' in results: # Check if the key is created by the scraper function
       Link.add_link(url = url, platform = results['platform'], text = results["text"]) 
-      print('Do I qualify')
     return jsonify(results = results["text"], url = url)
 
 @app.route('/api/history')

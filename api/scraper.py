@@ -26,12 +26,13 @@ def scraper(url):
                 elements = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/div[2]/div[1]/ul/div/li/div/div/div[2]/span').text
                 platform = 'Instagram'
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{twitter})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
-                time.sleep(2) #TODO: Use Wait instead of an arbitary sleep function
-                elements = driver.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div/div/section/div/div/div[1]/div/div/div/article/div/div[3]/div[1]/div/span').text
+                time.sleep(4) #TODO: Use Wait instead of an arbitary sleep function
+                elements = driver.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div/div/section/div/div/div[1]/div/div/div/div/article/div/div[3]/div[1]/div/span').text
                 platform = 'Twitter'
             contents["text"] = elements.replace('\n',' ')
             contents["platform"] = platform      
-        except:
+        except Exception as e: 
+            print(e)
             contents["text"] = 'Invalid platform link!'
         # End session
         finally:

@@ -12,7 +12,8 @@ class Search extends Component {
             url: '',
             percentage: 0,
             loading: false,
-            sentiments: ['hate speech', 'partisan views']
+            sentiment: '',
+            // sentiments: ['hate speech', 'etc']
         }
     }
     inputChangeHandler(e) {
@@ -30,6 +31,7 @@ class Search extends Component {
                 currentComponent.setState({loading: false})
                 currentComponent.setState({results: _results.results})
                 currentComponent.setState({url: _results.url})
+                currentComponent.setState({sentiment: _results.sentiment})
             })
             .catch(function(error){
                 currentComponent.setState({loading: false})
@@ -43,8 +45,16 @@ class Search extends Component {
         if (!this.state.results == "")
         {
 
-            const sentimentList =  this.state.sentiments;
+            // const sentimentList =  this.state.sentiments;
             // Let's show certain elements only when used  
+            var sentiment_color;
+            if (this.state.sentiment == 'Positive') {
+                sentiment_color = 'success'
+            } 
+            else {
+                sentiment_color = 'danger'
+            }
+
             analysis = 
                 <div>
                     <hr className = "mb-3"></hr>
@@ -55,15 +65,17 @@ class Search extends Component {
                     <p>{this.state.results}</p>
                     <h4>Falsehood Probability: </h4>
                     <p>{this.state.percentage}%</p>
-                    <h4>Sentiments: </h4>
-                    {/* Display tag for sentiments. TODO: Classify colors based on sentiment */}
-                    {   sentimentList.map(function(sentiment) {
+                    <h4>Sentiments: </h4>  
+                    <span className ={"badge p-2 mr-1 mb-3 badge-" + sentiment_color}>{this.state.sentiment }</span>
+                    {/* Display tag for sentiments. TODO: Classify colors based on sentiment, 
+                        add classifier of sentiment instead of just positive / negative*/}
+                    {/* {   sentimentList.map(function(sentiment) {
                         return <span class="badge badge-danger p-2 mr-1 mb-3">{sentiment}</span>
-                    })}
+                    })} */}
                     <h4>What do you think?</h4>
-                    <button class = "btn badge badge-success p-2 mr-1 mb-3">Excellent!</button>
-                    <button class = "btn badge badge-warning p-2 mr-1 mb-3">More work to be done!</button>
-                    <button class = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button>
+                    <button className = "btn badge badge-success p-2 mr-1 mb-3">Excellent!</button>
+                    <button className = "btn badge badge-warning p-2 mr-1 mb-3">More work to be done!</button>
+                    <button className = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button>
                 </div>
         }
         if (this.state.loading) {
@@ -79,6 +91,7 @@ class Search extends Component {
         return(
             <div>
                 <div className="input-group">
+                        {/* TODO: Add validation of the link */}
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
                         <span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span>
                 </div> 

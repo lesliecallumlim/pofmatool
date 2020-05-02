@@ -27,4 +27,4 @@ def remove_noise(tweet_tokens, stop_words = ()):
     return cleaned_tokens
 
 def load_model(): 
-    return load('./models/sentiment.joblib')
+    return load('./api/models/sentiment.joblib')

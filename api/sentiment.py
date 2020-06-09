@@ -26,5 +26,14 @@ def remove_noise(tweet_tokens, stop_words = ()):
             cleaned_tokens.append(token.lower())
     return cleaned_tokens
 
-def load_model(): 
-    return load('./api/models/sentiment.joblib')
+    
+
+def load_models(): 
+    #TODO: Repipe - this is due to the different project structure that is ran
+    try:
+        sentiment = load('./api/models/sentiment.joblib')
+        prediction = load('./api/models/log_model.joblib')
+    except FileNotFoundError:
+        sentiment = load('./models/sentiment.joblib')
+        prediction = load('./models/log_model.joblib')
+    return sentiment, prediction

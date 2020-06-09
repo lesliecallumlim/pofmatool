@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import './../App.css';
+// import Popover from 'react-simple-popover';
+import Popup from "reactjs-popup";
+
 
 class Search extends Component {
     constructor(props) {
@@ -10,19 +13,24 @@ class Search extends Component {
             search: '',
             results: '',            
             url: '',
-            percentage: 0,
+            fraud: false, 
             loading: false,
             sentiment: '',
-            // sentiments: ['hate speech', 'etc']
+            dialog: false
         }
     }
     inputChangeHandler(e) {
         this.setState({search: e.target.value });
     }
 
+    handleClose(e) {
+        this.setState({dialog: false});
+      }
+
     formHandler(e) {
         let currentComponent = this;
         currentComponent.setState({loading: true});
+        currentComponent.setState({dialog: true});
         e.preventDefault();
         const formFields = this.state;
         axios.post('/api/evaluate', formFields)
@@ -32,6 +40,7 @@ class Search extends Component {
                 currentComponent.setState({results: _results.results})
                 currentComponent.setState({url: _results.url})
                 currentComponent.setState({sentiment: _results.sentiment})
+                currentComponent.setState({fraud: _results.fraud})
             })
             .catch(function(error){
                 currentComponent.setState({loading: false})
@@ -41,10 +50,8 @@ class Search extends Component {
     }
 
     render() {
-        let analysis;
-        if (!this.state.results == "")
-        {
-
+        let content;
+        if (!this.state.results == "") {
             // const sentimentList =  this.state.sentiments;
             // Let's show certain elements only when used  
             var sentiment_color;
@@ -55,31 +62,49 @@ class Search extends Component {
                 sentiment_color = 'danger'
             }
 
-            analysis = 
-                <div>
-                    <hr className = "mb-3"></hr>
-                    <h3 className="mb-2">Your result </h3> 
+            var fraud_color;
+            if (!this.state.fraud) {
+                fraud_color = 'success'
+            } 
+            else {
+                fraud_color = 'danger'
+            }
+            if (!this.state.sentiment == '') {
+            content = 
+            <div>
+                <hr></hr>
+                    <h3 >Your result</h3> 
+                    <hr style = {{ "margin-top": "-0.1em"}}></hr>
                     <h4>Link Entered: </h4>
                     <p>{this.state.url}</p>
-                    <h4>Text: </h4>
+                    <h4>Keywords: </h4>
                     <p>{this.state.results}</p>
-                    <h4>Falsehood Probability: </h4>
-                    <p>{this.state.percentage}%</p>
+                    <h4>Falsehood:</h4>
+                    <span style={{textTransform: 'capitalize'}} className ={"badge p-2 mr-1 mb-3 badge-" + fraud_color}>{this.state.fraud + ''}</span>
                     <h4>Sentiments: </h4>  
                     <span className ={"badge p-2 mr-1 mb-3 badge-" + sentiment_color}>{this.state.sentiment }</span>
-                    {/* Display tag for sentiments. TODO: Classify colors based on sentiment, 
-                        add classifier of sentiment instead of just positive / negative*/}
-                    {/* {   sentimentList.map(function(sentiment) {
-                        return <span class="badge badge-danger p-2 mr-1 mb-3">{sentiment}</span>
-                    })} */}
                     <h4>What do you think?</h4>
                     <button className = "btn badge badge-success p-2 mr-1 mb-3">Excellent!</button>
                     <button className = "btn badge badge-warning p-2 mr-1 mb-3">More work to be done!</button>
-                    <button className = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button>
+                    <button className = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button> 
+            </div>
+            }
+            else {
+                content =  //TODO: Rewrite this - the elements will not render proper if appended to the string, tenaries don't work because of the jsx adjacent element issues
+                <div>
+                    <hr></hr>
+                        <h3 >Your result</h3> 
+                        <hr style = {{ "margin-top": "-0.1em"}}></hr>
+                        <h4>Link Entered: </h4>
+                        <p>{this.state.url}</p>
+                        <h4>Error: </h4>
+                        <p>{this.state.results}</p>
                 </div>
+            }
         }
+        
         if (this.state.loading) {
-            analysis = 
+            content = 
             <div>
                 <hr className = "mb-3"></hr>
                 <h3 className="mb-2">Your result </h3> 
@@ -88,17 +113,23 @@ class Search extends Component {
                 </Spinner>
             </div>
         }
+        
         return(
             <div>
                 <div className="input-group">
                         {/* TODO: Add validation of the link */}
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
-                        <span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span>
+                <div>
+                <Popup modal
+                       contentStyle = {{ "maxWidth": "500px", "width": "70%", "text-align": "center", "border-radius": "20px"} }
+                       trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
+                       {content} 
+                </Popup> 
                 </div> 
-                {analysis}
+                </div> 
             </div>
         );
     }
   }
   
-  export default Search;
+  export default Search; 

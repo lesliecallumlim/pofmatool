@@ -86,7 +86,7 @@ function App() {
       
     <ScrollspyNav scrollTargetIds ={ ['about', 'methodology', 'statistics', 'records'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
-        <a className="navbar-brand" href="#about">
+        <a className="navbar-brand" href="#">
         <span className="d-block d-lg-none">pofma checker</span>
         <span className="d-none d-lg-block">
             <img className="img-fluid img-profile rounded-circle mx-auto mb-2" alt = "Logo" src="img/logo.png"></img>

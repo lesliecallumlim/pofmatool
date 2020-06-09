@@ -3,6 +3,8 @@ pip3 install selenium
 pip3 install flask
 pip3 install flask-sqlalchemy
 pip3 install flask-migrate
+pip3 install nltk
+pip3 install sklearn
 
 sudo apt-get install nodejs
 sudo apt-get install npm

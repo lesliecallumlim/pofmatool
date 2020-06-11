@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 // Import charts
 import ResultChart from './components/charts.jsx';
@@ -6,8 +6,11 @@ import Records from './components/records.jsx';
 import Search from './components/search.jsx';
 import Highcharts from 'highcharts/highstock'
 import ScrollspyNav from 'react-scrollspy-nav';
-function App() {
-  return (
+
+
+class App extends Component {
+  render() { 
+    return (
     <div className="App">
       <div className="container-fluid p-0" >
         <section className="site-section p-3 p-lg-5 d-flex align-items-center" id="about">
@@ -114,6 +117,7 @@ function App() {
       </nav>
     </div>
   );
+  }
 }
 
 export default App;

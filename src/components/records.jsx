@@ -24,7 +24,6 @@ class Records extends Component {
     }
   }
 
-
   // async componentDidUpdate(prevState) {
   //   if (prevState.refresh !== this.state.refresh) {
   //     this.setState({isLoading : true});
@@ -49,8 +48,7 @@ class Records extends Component {
              <td>{url}</td>
              {/* <td>{text}</td> */}
              <td>{sentiment}</td>
-             <td style={{textTransform: 'capitalize'}}>{fraud + ''}</td>
-             {/* the string concatenation is intended as react do not display boolean values */}
+             <td>{fraud}</td>
              <td>{date_added}</td>
           </tr>
        )

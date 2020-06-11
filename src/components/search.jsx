@@ -13,24 +13,29 @@ class Search extends Component {
             search: '',
             results: '',            
             url: '',
-            fraud: false, 
+            fraud: '', 
             loading: false,
             sentiment: '',
-            dialog: false
+            isOpen: false
         }
     }
     inputChangeHandler(e) {
         this.setState({search: e.target.value });
     }
 
+
+    handleOpen(e) {
+        this.setState({isOpen: true});
+      }
+
     handleClose(e) {
-        this.setState({dialog: false});
+        this.setState({isOpen: false});
       }
 
     formHandler(e) {
         let currentComponent = this;
         currentComponent.setState({loading: true});
-        currentComponent.setState({dialog: true});
+        currentComponent.setState({isOpen: true});
         e.preventDefault();
         const formFields = this.state;
         axios.post('/api/evaluate', formFields)
@@ -63,7 +68,7 @@ class Search extends Component {
             }
 
             var fraud_color;
-            if (!this.state.fraud) {
+            if (this.state.fraud === 'Real') {
                 fraud_color = 'success'
             } 
             else {
@@ -80,13 +85,15 @@ class Search extends Component {
                     <h4>Keywords: </h4>
                     <p>{this.state.results}</p>
                     <h4>Falsehood:</h4>
-                    <span style={{textTransform: 'capitalize'}} className ={"badge p-2 mr-1 mb-3 badge-" + fraud_color}>{this.state.fraud + ''}</span>
+                    <span style={{textTransform: 'capitalize'}} className ={"badge p-2 mr-1 mb-3 badge-" + fraud_color}>{this.state.fraud}</span>
                     <h4>Sentiments: </h4>  
                     <span className ={"badge p-2 mr-1 mb-3 badge-" + sentiment_color}>{this.state.sentiment }</span>
                     <h4>What do you think?</h4>
                     <button className = "btn badge badge-success p-2 mr-1 mb-3">Excellent!</button>
                     <button className = "btn badge badge-warning p-2 mr-1 mb-3">More work to be done!</button>
                     <button className = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button> 
+                    <hr></hr>
+                    <a className="close" onClick={this.handleClose.bind(this)}>x</a>
             </div>
             }
             else {
@@ -99,6 +106,8 @@ class Search extends Component {
                         <p>{this.state.url}</p>
                         <h4>Error: </h4>
                         <p>{this.state.results}</p>
+                        <hr></hr>
+                        <a className="close" onClick={this.handleClose.bind(this)}>x</a>
                 </div>
             }
         }
@@ -108,6 +117,7 @@ class Search extends Component {
             <div>
                 <hr className = "mb-3"></hr>
                 <h3 className="mb-2">Your result </h3> 
+                <hr style = {{ "margin-top": "-0.1em"}}></hr>
                 <Spinner animation="grow" variant="dark">
                 <span className="sr-only">Loading...</span>
                 </Spinner>
@@ -120,10 +130,12 @@ class Search extends Component {
                         {/* TODO: Add validation of the link */}
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
                 <div>
-                <Popup modal
+                <Popup modal 
+                    //    onOpen={this.handleOpen.bind(this)} 
+                       onClose={this.handleClose.bind(this)} 
                        contentStyle = {{ "maxWidth": "500px", "width": "70%", "text-align": "center", "border-radius": "20px"} }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
-                       {content} 
+                        {content}
                 </Popup> 
                 </div> 
                 </div> 

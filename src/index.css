@@ -96,6 +96,22 @@ li {
   border-color: #FB9039 !important;
   /* border: 1px; */
 }
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -6px;
+  top: -7px;
+  font-size: 1.3rem !important;
+  background-color: #1F3044 !important;
+  color: #ffffff !important;
+  border-radius: 20px;
+  font-weight: 200;
+}
+
 .btn-primary {
   display: inline-block;
   background-color: #1F3044 !important;

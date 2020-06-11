@@ -5,6 +5,7 @@ from api.scraper import scraper
 from api.models import Link
 from api.sentiment import remove_noise, load_models
 from nltk.tokenize import word_tokenize
+
 # Flask now automatically returns a python dictionary in json strings
 @app.route('/api/results')
 def get_results():
@@ -35,7 +36,6 @@ def evaluate_link():
     results = scraper(url)
     # results['text'] = clean_text(results['text'])    
     results['sentiment_result'] = results['fraud_result'] = ''
-    
     #TODO: Split the database function into a separate function instead
     #TODO: Create a custom try catch block for invalid URLs
     if 'platform' in results: # Check if the key is created by the scraper function
@@ -50,10 +50,10 @@ def evaluate_link():
       _text = remove_noise(word_tokenize(results['text']))
       results['sentiment_result'] = sentiment.classify(dict([token, True] for token in _text))
       _fraud_result = log_model.predict([results['text']])
-      results['fraud_result'] = True if _fraud_result[0] == 'fake' else False
-      # Commit to DB
+      results['fraud_result'] = 'Fake' if _fraud_result[0] == 'fake' else 'Real'
       Link.add_link(url = url, platform = results['platform'], text = results['text'], sentiment = results['sentiment_result'], fraud = results['fraud_result']) 
-    return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'], fraud = results['fraud_result'])
+    
+    return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'], fraud = results['fraud_result'] )
 
 @app.route('/api/history')
 def get_records():

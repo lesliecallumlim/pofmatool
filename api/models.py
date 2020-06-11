@@ -18,7 +18,7 @@ class Link(db.Model, Serializer):
     text = db.Column(db.String(200))
     sentiment = db.Column(db.String(50))
     date_added = db.Column(db.DateTime, default = datetime.now)
-    fraud = db.Column(db.Boolean)
+    fraud = db.Column(db.String(20))
     f_deleted = db.Column(db.Boolean, default = False)
 
     @classmethod

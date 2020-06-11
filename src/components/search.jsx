@@ -93,7 +93,6 @@ class Search extends Component {
                     <button className = "btn badge badge-warning p-2 mr-1 mb-3">More work to be done!</button>
                     <button className = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button> 
                     <hr></hr>
-                    <a className="close" onClick={this.handleClose.bind(this)}>x</a>
             </div>
             }
             else {
@@ -107,7 +106,6 @@ class Search extends Component {
                         <h4>Error: </h4>
                         <p>{this.state.results}</p>
                         <hr></hr>
-                        <a className="close" onClick={this.handleClose.bind(this)}>x</a>
                 </div>
             }
         }
@@ -129,15 +127,17 @@ class Search extends Component {
                 <div className="input-group">
                         {/* TODO: Add validation of the link */}
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
-                <div>
-                <Popup modal 
+                    <div>
+                    <Popup modal 
                     //    onOpen={this.handleOpen.bind(this)} 
                        onClose={this.handleClose.bind(this)} 
                        contentStyle = {{ "maxWidth": "500px", "width": "70%", "text-align": "center", "border-radius": "20px"} }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
-                        {content}
-                </Popup> 
-                </div> 
+                        {modal => ( 
+                             content  + <a className="close" onClick={modal}>x</a>
+                        )}
+                    </Popup> 
+                    </div> 
                 </div> 
             </div>
         );

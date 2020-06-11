@@ -16,26 +16,15 @@ class Search extends Component {
             fraud: '', 
             loading: false,
             sentiment: '',
-            isOpen: false
         }
     }
     inputChangeHandler(e) {
         this.setState({search: e.target.value });
     }
 
-
-    handleOpen(e) {
-        this.setState({isOpen: true});
-      }
-
-    handleClose(e) {
-        this.setState({isOpen: false});
-      }
-
     formHandler(e) {
         let currentComponent = this;
         currentComponent.setState({loading: true});
-        currentComponent.setState({isOpen: true});
         e.preventDefault();
         const formFields = this.state;
         axios.post('/api/evaluate', formFields)
@@ -129,15 +118,13 @@ class Search extends Component {
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
                     <div>
                     <Popup modal 
-                    //    onOpen={this.handleOpen.bind(this)} 
-                       onClose={this.handleClose.bind(this)} 
                        contentStyle = {{ "maxWidth": "500px", "width": "70%", "text-align": "center", "border-radius": "20px"} }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
                         {modal => ( 
-                             content  + <a className="close" onClick={modal}>x</a>
+                            <>{ content } <a className="close" onClick={modal}>x</a></>
                         )}
                     </Popup> 
-                    </div> 
+                </div> 
                 </div> 
             </div>
         );

@@ -61,7 +61,7 @@ class UserPanel extends Component {
                     }, 400);
                 }}
             >
-            {({ isSubmitting, isValid, dirty}) => (
+            {({ isValid, dirty }) => (
             <div>
                 <Form className =  "registrationForm">
                     <Field type="username" name="username" placeHolder = "Your username." className = "inputFields"/>
@@ -71,7 +71,7 @@ class UserPanel extends Component {
                     <Field type="password" placeHolder = "Your password." name = "password" className = "inputFields" />
                     <ErrorMessage name="password" component="div"/>
                     <Popup modal 
-                        contentStyle = {{ "maxWidth": "500px", "maxHeight": "100%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center", "border-radius": "20px", } }
+                        // contentStyle = {{ "maxWidth": "500px", "maxHeight": "100%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center", "border-radius": "20px", } }
                         trigger = {<button type="submit" className = "inputFields submit" disabled={!(isValid && dirty)}>Submit</button>}>
                         {modal => ( 
                             <>{ this.state.results } <a href className="close" onClick={modal}>x</a></>
@@ -89,7 +89,7 @@ class UserPanel extends Component {
         return(
             <>
             <Popup modal 
-                contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center", "border-radius": "20px", } }
+                contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center" } }
                 trigger= {< a href = "#register" className = "nav-link nav-link-active">Register</a> } >
                 {modal => ( 
                     <>{ content } <a href className="close" onClick={modal}>x</a></>

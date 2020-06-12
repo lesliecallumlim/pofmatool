@@ -18,6 +18,7 @@ class Search extends Component {
             sentiment: '',
         }
     }
+
     inputChangeHandler(e) {
         this.setState({search: e.target.value });
     }
@@ -117,7 +118,7 @@ class Search extends Component {
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
                     <div>
                     <Popup modal 
-                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "text-align": "center", "border-radius": "20px", } }
+                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "text-align": "center" } }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
                         {modal => ( 
                             <>{ content } <a className="close" onClick={modal}>x</a></>

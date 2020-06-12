@@ -1,8 +1,9 @@
 from flask import request, jsonify
 from api import app
 # Custom modules
+from api.errors import bad_request 
 from api.scraper import scraper
-from api.models import Link
+from api.models import Link, User
 from api.sentiment import remove_noise, load_models
 from nltk.tokenize import word_tokenize
 
@@ -53,8 +54,24 @@ def evaluate_link():
       results['fraud_result'] = 'Fake' if _fraud_result[0] == 'fake' else 'Real'
       Link.add_link(url = url, platform = results['platform'], text = results['text'], sentiment = results['sentiment_result'], fraud = results['fraud_result']) 
     
-    return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'], fraud = results['fraud_result'] )
+    return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'], fraud = results['fraud_result'])
 
 @app.route('/api/history')
 def get_records():
   return jsonify(Link().get_past_records())
+
+@app.route('/api/register', methods = ['POST'])
+def create_user():
+    data = request.get_json()
+    if 'username' not in data or 'email' not in data or 'password' not in data:
+        return bad_request('Must include username, email and password fields.')
+    if User.query.filter_by(username=data['username']).first():
+        return bad_request('Username has already been taken.')
+    if User.query.filter_by(email=data['email']).first():
+        return bad_request('Email has been previously registered.')
+    User.add_user(username = data['username'], email = data['email'], password = data['password'])
+    # response = jsonify(user.to_dict())
+    response = jsonify("User registered!")
+    response.status_code = 201
+    # response.headers['Location'] = url_for('api.get_user', id = user.id)
+    return response

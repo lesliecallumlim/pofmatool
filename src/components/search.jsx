@@ -39,8 +39,7 @@ class Search extends Component {
             .catch(function(error){
                 currentComponent.setState({loading: false})
                 currentComponent.setState({results: error})
-            })
-        ;
+            });
     }
 
     render() {
@@ -118,7 +117,7 @@ class Search extends Component {
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
                     <div>
                     <Popup modal 
-                       contentStyle = {{ "maxWidth": "500px", "width": "70%", "text-align": "center", "border-radius": "20px"} }
+                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "text-align": "center", "border-radius": "20px", } }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
                         {modal => ( 
                             <>{ content } <a className="close" onClick={modal}>x</a></>
@@ -126,7 +125,7 @@ class Search extends Component {
                     </Popup> 
                 </div> 
                 </div> 
-            </div>
+            </div> 
         );
     }
   }

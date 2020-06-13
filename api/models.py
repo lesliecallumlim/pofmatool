@@ -5,7 +5,7 @@ from sqlalchemy import and_, or_, false, true, func
 from sqlalchemy.inspection import inspect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-import jwt
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 
 class Serializer(object):
     def serialize(self):
@@ -40,30 +40,29 @@ class User(db.Model, UserMixin, Serializer):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     is_banned = db.Column(db.Boolean, default = False)
-
-    def encode_auth_token(self, id):
-        try:
-            payload = {
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id
-            }
-            return jwt.encode(
-                payload,
-                app.config.get('SECRET_KEY'),
-                algorithm='HS256'
-            )
-        except Exception as e:
-            return e
+    is_admin = db.Column(db.Boolean, default = False)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    @classmethod
     def get_users(cls, records = 30):
         records = cls.query.filter(cls.is_banned != True).order_by(cls.id.desc()).limit(records)
-        return User.serialize_list(records) 
-
+        return User.serialize_list(records)
+#
+    # @classmethod
     def add_user(username, email, password):
         _user = User(username = username, email = email, password_hash = generate_password_hash(password))
         db.session.add(_user)
         db.session.commit()
+    
+
+    @classmethod
+    def verify_identity(cls, username, password):
+        user = cls.query.filter(and_(cls.username == username)).first()
+        user.check_password(password)
+        print(user.username)
+        if user is not None:
+            return user, create_access_token(identity = username)
+        else:
+            return None, None

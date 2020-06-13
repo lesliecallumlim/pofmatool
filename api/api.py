@@ -70,8 +70,21 @@ def create_user():
     if User.query.filter_by(email=data['email']).first():
         return bad_request('Email has been previously registered.')
     User.add_user(username = data['username'], email = data['email'], password = data['password'])
-    # response = jsonify(user.to_dict())
     response = jsonify("User registered!")
     response.status_code = 201
-    # response.headers['Location'] = url_for('api.get_user', id = user.id)
     return response
+
+@app.route('/api/login', methods = ['POST'])
+def login():
+    data = request.get_json()
+    if 'username' not in data or 'password' not in data:
+        return bad_request('Username or password missing.')
+    user, token = User.verify_identity(username = data['username'],password = data['password'])
+    
+    if user and token is not None:
+        response = jsonify(f'Welcome {user.username}!' )
+        response.status_code = 201
+        response.access_token = token
+        return response
+    else:
+       return bad_request('Username or password wrong.')

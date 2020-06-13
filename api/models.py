@@ -56,12 +56,10 @@ class User(db.Model, UserMixin, Serializer):
         db.session.add(_user)
         db.session.commit()
     
-
     @classmethod
     def verify_identity(cls, username, password):
         user = cls.query.filter(and_(cls.username == username)).first()
         user.check_password(password)
-        print(user.username)
         if user is not None:
             return user, create_access_token(identity = username)
         else:

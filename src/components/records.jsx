@@ -71,7 +71,8 @@ class Records extends Component {
     }
 
     return ( 
-        <div className = 'table-responsive'>
+      <>
+        <div className = 'table-responsive' style = {{"maxHeight": "50%", "overflowY" :"auto","overflowX" :"hidden"}}>
           <table id='history' className = 'table-hover table' >
               <tbody>
               <tr>
@@ -86,8 +87,9 @@ class Records extends Component {
                 {this.renderTableData()}
               </tbody>
           </table>
-          <span><button type="submit" className = "btn btn-primary" onClick = {this.refresh.bind(this)}>Refresh</button></span>
         </div>
+        <span><button type="submit" className = "btn btn-primary" onClick = {this.refresh.bind(this)}>Refresh</button></span>
+      </>
     )
   }
 }

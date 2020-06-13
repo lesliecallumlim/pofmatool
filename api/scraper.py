@@ -9,13 +9,13 @@ def clean_text(text):
 
     REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]\|@,;]')
     BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
-    nltk.download('stopwords')
+    # nltk.download('stopwords')
     STOPWORDS = set(stopwords.words('english'))
 
     text = text.lower() # lowercase text
     text = REPLACE_BY_SPACE_RE.sub(' ', text) # replace REPLACE_BY_SPACE_RE symbols by space in text. substitute the matched string in REPLACE_BY_SPACE_RE with space.
     text = BAD_SYMBOLS_RE.sub('', text) # remove symbols which are in BAD_SYMBOLS_RE from text. substitute the matched string in BAD_SYMBOLS_RE with nothing. 
-    text = text.replace('x', '')
+    # text = text.replace('x', '')
     #    text = re.sub(r'\W+', '', text)
     text = ' '.join(word for word in text.split() if word not in STOPWORDS) # remove stopwors from text
     return text
@@ -55,6 +55,6 @@ def scraper(url):
         finally:
             driver.quit()
     else:
-        contents["text"] = 'The URL is currently not supported!'
+        contents["text"] = 'This URL is currently not supported!'
     return contents
 

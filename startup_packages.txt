@@ -1,4 +1,5 @@
 pip3 install chromedriver-binary==81.0.4044.69.0
+pip3 install chromedriver-binary==83.0.4103.39.0
 pip3 install selenium
 pip3 install flask
 pip3 install flask-sqlalchemy

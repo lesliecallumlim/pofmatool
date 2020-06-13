@@ -10,13 +10,15 @@ import ScrollspyNav from 'react-scrollspy-nav';
 
 
 class App extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     refresh
-  //   }
-  // } 
-  
+  constructor(props) {
+    super(props);
+    this.rerenderParentCallback = this.rerenderParentCallback.bind(this);
+  } 
+
+  rerenderParentCallback() {
+    this.forceUpdate();
+  }
+
   render() { 
     return (
     <div className="App">
@@ -37,7 +39,7 @@ class App extends Component {
           </p>
           </div>
           <p className="subheading mb-5"></p>
-            <Search />
+            <Search rerenderParentCallback={this.rerenderParentCallback}/>
           <hr className="mb-2"></hr>
             <div className="social-icons">
               <a href="mailto:hello@lesliecallum.com">

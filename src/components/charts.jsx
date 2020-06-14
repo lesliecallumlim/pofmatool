@@ -17,6 +17,7 @@ class ResultChart extends Component {
     this.setState({isLoading : true});
     try {
       const result = await axios.get('/api/results');
+      console.log(result)
       this.setState({ data : result.data.results, isLoading: false});
     }
     catch (error) {
@@ -37,6 +38,7 @@ class ResultChart extends Component {
 
     // TODO: To refactor
     let platforms = []; let fake_news = [];  let real_news = [];
+    console.log(data)
     Object.keys(data).forEach(function(key) {
       platforms.push(data[key]['platform']);
       fake_news.push(data[key]['fake_news']);
@@ -58,14 +60,17 @@ class ResultChart extends Component {
       
       plotOptions: { 
         column: { 
-          dataLabels: { enabled: true, style: { textOutline: false }, formatter: function() { return this.y + '%'; } },
-                stacking: 'normal',
-        },
-
-
+          dataLabels: { enabled: true, style: { textOutline: false }, formatter: function() { return this.y; } },
+          stacking: 'percent'
+        }
       },
-      tooltip: { formatter: function() { return this.series.name + ": " + this.y + "%"; }},
-    }
+          
+        
+
+      tooltip: 
+      // { formatter: function() { return this.series.name + ": " + this.y + "%"; }},
+      {  pointFormat: '({point.percentage:.0f}%)'
+    }}
     
     return ( 
       <HighchartsReact

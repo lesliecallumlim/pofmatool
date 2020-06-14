@@ -16,7 +16,7 @@ class Records extends Component {
     this.setState({isLoading : true});
     try {
       const result = await axios.get('/api/history');
-      console.log(result)
+      // console.log(result)
       this.setState({ data : result.data, isLoading: false});
     }
     catch (error) {
@@ -44,7 +44,7 @@ class Records extends Component {
        const { date_added, fraud, id, platform, sentiment, text, url } = data //destructuring
        return (
           <tr key={id}>
-             <td>{platform}</td>
+            <td>{platform}</td>
              <td>{url}</td>
              {/* <td>{text}</td> */}
              <td>{sentiment}</td>

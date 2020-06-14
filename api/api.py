@@ -8,27 +8,9 @@ from api.sentiment import remove_noise, load_models
 from nltk.tokenize import word_tokenize
 
 # Flask now automatically returns a python dictionary in json strings
-@app.route('/api/results')
+@app.route('/api/results', methods = ['GET'])
 def get_results():
-    # Placeholder for testing
-    _result = {   
-      "source1": { 
-        "platform"  : "Twitter",
-        "fake_news" : 30,
-        "real_news" : 70,  
-      },
-      "source2": { 
-        "platform"  : "Facebook",
-        "fake_news" : 35,
-        "real_news" : 65,  
-      },
-      "source3": { 
-        "platform" : "LinkedIn",
-        "fake_news" : 20,
-        "real_news" : 80,  
-      },
-    }
-    return {'results': _result}
+    return jsonify(results = Link.get_summarised_records())
 
 @app.route('/api/evaluate', methods = ['POST'])
 def evaluate_link():

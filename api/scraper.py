@@ -49,7 +49,6 @@ def scraper(url):
             contents["text"] = clean_text(elements)
             contents["platform"] = platform      
         except Exception as e: 
-            print(e)
             contents["text"] = 'Invalid platform link!'
         # End session
         finally:

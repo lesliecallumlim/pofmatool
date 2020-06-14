@@ -26,8 +26,6 @@ def remove_noise(tweet_tokens, stop_words = ()):
             cleaned_tokens.append(token.lower())
     return cleaned_tokens
 
-    
-
 def load_models(): 
     #TODO: Repipe - this is due to the different project structure that is ran
     try:

@@ -1,11 +1,12 @@
 # SQLLite model
 from api import db
 from datetime import datetime
-from sqlalchemy import and_, or_, false, true, func
+from sqlalchemy import and_, or_, false, true, func, case
 from sqlalchemy.inspection import inspect
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from flask import jsonify 
 
 class Serializer(object):
     def serialize(self):
@@ -33,6 +34,14 @@ class Link(db.Model, Serializer):
         _link = Link(url = url, text = text, platform = platform, sentiment = sentiment, fraud = fraud)
         db.session.add(_link)
         db.session.commit()
+
+    @classmethod
+    def get_summarised_records(cls):
+        # count = func.count(cls.id)
+        real_news = func.sum(case([(cls.fraud == 'Real', 1)], else_= 0)).label('real_news')
+        fake_news = func.sum(case([(cls.fraud == 'Fake', 1)], else_= 0)).label('fake_news')
+        summary = cls.query.with_entities(cls.platform, real_news, fake_news).group_by(cls.platform).filter(cls.f_deleted != True).all()
+        return summary
 
 class User(db.Model, UserMixin, Serializer):
     id = db.Column(db.Integer, primary_key=True)

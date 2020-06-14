@@ -59,8 +59,7 @@ class User(db.Model, UserMixin, Serializer):
     @classmethod
     def verify_identity(cls, username, password):
         user = cls.query.filter(and_(cls.username == username)).first()
-        user.check_password(password)
-        if user is not None:
+        if user is not None and user.check_password(password):
             return user, create_access_token(identity = username)
         else:
             return None, None

@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import and_, or_, false, true, func, case
 from sqlalchemy.inspection import inspect
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+# from flask_login import UserMixin
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 from flask import jsonify 
 
@@ -43,7 +43,7 @@ class Link(db.Model, Serializer):
         summary = cls.query.with_entities(cls.platform, real_news, fake_news).group_by(cls.platform).filter(cls.f_deleted != True).all()
         return summary
 
-class User(db.Model, UserMixin, Serializer):
+class User(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)

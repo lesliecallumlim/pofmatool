@@ -67,10 +67,9 @@ class ResultChart extends Component {
           
         
 
-      tooltip: 
-      // { formatter: function() { return this.series.name + ": " + this.y + "%"; }},
-      {  pointFormat: '({point.percentage:.0f}%)'
-    }}
+      tooltip: {  pointFormat: '({point.percentage:.0f}%)'
+      } 
+    }
     
     return ( 
       <HighchartsReact

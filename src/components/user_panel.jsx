@@ -33,7 +33,6 @@ class UserPanel extends Component {
         })
         .catch(function(error){
             currentComponent.setState({loading: false})
-            console.log(error.response)
             currentComponent.setState({results: error.response.data.message})
         });
     }
@@ -102,31 +101,29 @@ class UserPanel extends Component {
             <hr></hr>
             <Formik
                 initialValues={{ username: '', password: ''}}
-                // validate={values => {
-                //     const errors = {};
-                //     if (!values.email) {
-                //         errors.email = 'Required';
-                //     } 
-                    
-                //     else if (
-                //         !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                //     ) {
-                //         errors.email = 'Invalid email address';
-                //     }
-                //     return errors;
-                // }}
+                validate={values => {
+                    const errors = {};
+                    if (!values.username) {
+                        errors.username = 'Required';
+                    } 
+                    if (!values.password) {
+                        errors.password = 'Required';
+                    } 
+                    return errors;
+                }}
 
                 onSubmit= { (values, { setSubmitting }) => {
                     setTimeout(() => {
                         this.formHandler(values, 'login');
                         setSubmitting(false);
-                    }, 400);
+                    }, 700);
                 }}
             >
             {({ isValid, dirty }) => (
             <div>
                 <Form className =  "registrationForm"> 
                     <Field type="username" name="username" placeHolder = "Your username." className = "inputFields"/>
+                    <ErrorMessage name="username" component="div"/>
                     <Field type="password" placeHolder = "Your password." name = "password" className = "inputFields" />
                     <ErrorMessage name="password" component="div"/>
                     <Popup modal 
@@ -150,19 +147,20 @@ class UserPanel extends Component {
                 {modal => ( 
                 <>{ registration } <a href className="close" onClick={modal}>x</a></>
                 )}
-        </Popup>;
-    
+        </Popup>
+    ;
     var login_link = 
         <Popup modal 
                 contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center" } }
-                trigger= {< a href = "#register" className = "nav-link nav-link-active">Login</a> } >
+                trigger= {< a href = "#login" className = "nav-link nav-link-active">Login</a> } >
                 {modal => ( 
                 <>{ login } <a href className="close" onClick={modal}>x</a></>
                 )}
-        </Popup> 
+        </Popup>
+    ;
 
     if (this.state.isLoggedIn) { return(<><a href = "#logout" className = "nav-link nav-link-active" onClick = {this.logOut.bind(this)}>Logout</a></>) }
-    else { return(<> {register_link}{login_link} </> ); }
+    else { return(<> {register_link}{login_link} </>); }
  }
 }
 

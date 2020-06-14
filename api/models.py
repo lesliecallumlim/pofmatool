@@ -24,14 +24,15 @@ class Link(db.Model, Serializer):
     date_added = db.Column(db.DateTime, default = datetime.now)
     fraud = db.Column(db.String(20))
     f_deleted = db.Column(db.Boolean, default = False)
+    username_submitted = db.Column(db.String(64), default = 'Guest')
 
     @classmethod
     def get_past_records(cls, records = 30): 
         records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).limit(records)
         return Link.serialize_list(records)
 
-    def add_link(url, platform, text, sentiment, fraud):
-        _link = Link(url = url, text = text, platform = platform, sentiment = sentiment, fraud = fraud)
+    def add_link(url, platform, text, sentiment, fraud, username):
+        _link = Link(url = url, text = text, platform = platform, sentiment = sentiment, fraud = fraud, username_submitted = username)
         db.session.add(_link)
         db.session.commit()
 
@@ -42,6 +43,10 @@ class Link(db.Model, Serializer):
         fake_news = func.sum(case([(cls.fraud == 'Fake', 1)], else_= 0)).label('fake_news')
         summary = cls.query.with_entities(cls.platform, real_news, fake_news).group_by(cls.platform).filter(cls.f_deleted != True).all()
         return summary
+    @classmethod
+    def get_user_past_records(cls, username, records = 30): 
+        records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == username)).order_by(cls.date_added.desc()).limit(records)
+        return Link.serialize_list(records)
 
 class User(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)

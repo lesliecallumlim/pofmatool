@@ -6,19 +6,25 @@ from api.scraper import scraper
 from api.models import Link, User
 from api.sentiment import remove_noise, load_models
 from nltk.tokenize import word_tokenize
-
+from flask_jwt_extended import (jwt_required, jwt_optional, get_jwt_identity)
 # Flask now automatically returns a python dictionary in json strings
 @app.route('/api/results', methods = ['GET'])
 def get_results():
     return jsonify(results = Link.get_summarised_records())
 
+
 @app.route('/api/evaluate', methods = ['POST'])
+@jwt_optional
 def evaluate_link():
-    url = request.get_json().get('search')
-    url = str(url).strip()
+    url = request.get_json()
+    url = str(url.get('search')).strip()
     results = scraper(url)
     # results['text'] = clean_text(results['text'])    
     results['sentiment_result'] = results['fraud_result'] = ''
+
+    current_user = get_jwt_identity()
+    current_user = current_user if current_user else 'Guest'
+
     #TODO: Split the database function into a separate function instead
     #TODO: Create a custom try catch block for invalid URLs
     if 'platform' in results: # Check if the key is created by the scraper function
@@ -30,11 +36,14 @@ def evaluate_link():
         # Load models
         sentiment, log_model = load_models()
       
+     #JWT based user details 
       _text = remove_noise(word_tokenize(results['text']))
       results['sentiment_result'] = sentiment.classify(dict([token, True] for token in _text))
       _fraud_result = log_model.predict([results['text']])
       results['fraud_result'] = 'Fake' if _fraud_result[0] == 'fake' else 'Real'
-      Link.add_link(url = url, platform = results['platform'], text = results['text'], sentiment = results['sentiment_result'], fraud = results['fraud_result']) 
+      Link.add_link(url = url, platform = results['platform'], text = results['text'],\
+                    sentiment = results['sentiment_result'], fraud = results['fraud_result'],\
+                    username = current_user) 
     
     return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'], fraud = results['fraud_result'])
 
@@ -69,3 +78,11 @@ def login():
         return response
     else:
        return bad_request('Username or password wrong.')
+
+@app.route('/api/submitted', methods = ['GET'])
+@jwt_optional
+def view_past_records():
+    current_user = get_jwt_identity()
+    past_submissions = Link.get_user_past_records(username = current_user)
+    return jsonify(logged_in_as = current_user, past_submissions = past_submissions)
+

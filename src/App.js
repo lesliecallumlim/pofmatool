@@ -12,12 +12,8 @@ import ScrollspyNav from 'react-scrollspy-nav';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.rerenderParentCallback = this.rerenderParentCallback.bind(this);
   } 
 
-  rerenderParentCallback() {
-    this.forceUpdate();
-  }
 
   render() { 
     return (

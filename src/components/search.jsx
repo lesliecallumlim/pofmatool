@@ -9,21 +9,14 @@ import Popup from "reactjs-popup";
 class Search extends Component {
     constructor(props) {
         super(props);
-        this.onBtnClick = this.onBtnClick.bind(this);
         this.state = { 
             search: '',
             results: '',            
             url: '',
             fraud: '', 
             loading: false,
-            sentiment: '',
-            modalClosed: false
+            sentiment: ''
         }
-    }
-
-    onBtnClick(){
-        this.setState({modalClosed: true});
-        this.props.rerenderParentCallback();
     }
 
     inputChangeHandler(e) {

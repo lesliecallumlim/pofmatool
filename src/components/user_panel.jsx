@@ -128,8 +128,14 @@ class UserPanel extends Component {
                     <ErrorMessage name="password" component="div"/>
                     <Popup modal 
                        trigger = {<button type="submit" className = "inputFields submit" disabled={!(isValid && dirty)}>Submit</button>}>
-                        {modal => ( 
-                            <>{ this.state.results } <a href className="close" onClick={modal}>x</a></>
+                        {close => ( 
+                            <><a 
+                                className="close" 
+                                onClick={(e) => {
+                                    close()
+                                    window.location.reload(false)
+                                }}>x
+                                </a></>
                         )}
                     </Popup>
                 </Form>

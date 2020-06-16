@@ -7,6 +7,8 @@ from api.models import Link, User
 from api.sentiment import remove_noise, load_models
 from nltk.tokenize import word_tokenize
 from flask_jwt_extended import (jwt_required, jwt_optional, get_jwt_identity)
+
+
 # Flask now automatically returns a python dictionary in json strings
 @app.route('/api/results', methods = ['GET'])
 def get_results():
@@ -70,11 +72,15 @@ def login():
     data = request.get_json()
     if 'username' not in data or 'password' not in data:
         return bad_request('Username or password missing.')
+
     user, token = User.verify_identity(username = data['username'],password = data['password'])
 
     if user and token is not None:
         response = jsonify(message = f'Welcome {user.username}', token = token)
         response.status_code = 201
+        #Create a session for logged-in user.
+        #session['user_id'] = data['username']
+        #return redirect(url_for('/'))
         return response
     else:
        return bad_request('Username or password wrong.')

@@ -30,7 +30,8 @@ class UserPanel extends Component {
             currentComponent.setState({results: _results.message})
             if (api_url === 'login') {
                 localStorage.setItem('token', _results.token);
-                if (_results.token !== '') { currentComponent.setState({isLoggedIn: true}); } //To refactor
+                if (_results.token !== '') { localStorage.setItem('loggedIn', true); 
+                                            window.location.reload(false)} //To refactor
             }
         })
         .catch(function(error){
@@ -39,9 +40,18 @@ class UserPanel extends Component {
         })
     }
 
+    componentDidMount() {
+        const loggedIn = localStorage.getItem('loggedIn') === 'true';
+        if (loggedIn == true)
+            this.setState({ isLoggedIn: true});
+        else
+            this.setState({isLoggedIn: false})
+    }
+
     logOut() {
-        this.setState({isLoggedIn: false})
+        localStorage.setItem('loggedIn', false);
         localStorage.removeItem('token');
+        window.location.reload(false)
     }
     
     render() {        
@@ -116,10 +126,11 @@ class UserPanel extends Component {
                 }}
 
                 onSubmit= { (values, { setSubmitting }) => {
+                    //window.location.reload(false)
                     setTimeout(() => {
                         this.formHandler(values, 'login');
                         setSubmitting(false);
-                    }, 700);
+                    }, 700); 
                 }}
             >
             {({ isValid, dirty }) => (

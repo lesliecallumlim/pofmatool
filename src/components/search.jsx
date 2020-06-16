@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import './../App.css';
-// import Popover from 'react-simple-popover';
 import Popup from "reactjs-popup";
 
 
 class Search extends Component {
     constructor(props) {
         super(props);
+        this.onBtnClick = this.onBtnClick.bind(this);	
         this.state = { 
             search: '',
             results: '',            
             url: '',
             fraud: '', 
             loading: false,
-            sentiment: ''
+            sentiment: '',
+            modalClosed: false	
         }
     }
 
@@ -23,16 +24,21 @@ class Search extends Component {
         this.setState({search: e.target.value });
     }
 
-    // refreshPage = () => {
-    //     window.location.reload(false);
-    // }
+    onBtnClick(){	
+        this.setState({modalClosed: true});	
+        this.props.rerenderParentCallback();	
+    }
 
     formHandler(e) {
         let currentComponent = this;
         currentComponent.setState({loading: true});
         e.preventDefault();
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
         const formFields = this.state;
-        axios.post('/api/evaluate', formFields)
+        axios.post('/api/evaluate', formFields, config)
             .then(function(response) {
                 const _results = response.data;
                 currentComponent.setState({loading: false})

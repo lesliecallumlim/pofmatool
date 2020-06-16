@@ -14,6 +14,8 @@ class UserPanel extends Component {
         }
     }
 
+    
+
     async formHandler(values, type) {
         let currentComponent = this;
         currentComponent.setState({loading: true});
@@ -34,11 +36,12 @@ class UserPanel extends Component {
         .catch(function(error){
             currentComponent.setState({loading: false})
             currentComponent.setState({results: error.response.data.message})
-        });
+        })
     }
 
     logOut() {
         this.setState({isLoggedIn: false})
+        localStorage.removeItem('token');
     }
     
     render() {        
@@ -128,14 +131,8 @@ class UserPanel extends Component {
                     <ErrorMessage name="password" component="div"/>
                     <Popup modal 
                        trigger = {<button type="submit" className = "inputFields submit" disabled={!(isValid && dirty)}>Submit</button>}>
-                        {close => ( 
-                            <><a 
-                                className="close" 
-                                onClick={(e) => {
-                                    close()
-                                    window.location.reload(false)
-                                }}>x
-                                </a></>
+                        {modal => ( 	   
+                            <>{ this.state.results } <a href className="close" onClick={modal}>x</a></>	
                         )}
                     </Popup>
                 </Form>
@@ -165,9 +162,13 @@ class UserPanel extends Component {
         </Popup>
     ;
 
-    if (this.state.isLoggedIn) { return(<><a href = "#logout" className = "nav-link nav-link-active" onClick = {this.logOut.bind(this)}>Logout</a></>) }
-    else { return(<> {register_link}{login_link} </>); }
+    if (this.state.isLoggedIn) { 
+        return(<><a href = "#logout" className = "nav-link nav-link-active" onClick = {this.logOut.bind(this)}>Logout</a></>) 
+    }
+    else { 
+        return(<> {register_link}{login_link} </>); 
+    }
  }
 }
 
-export default UserPanel; 
+export default UserPanel;

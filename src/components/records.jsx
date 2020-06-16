@@ -5,10 +5,12 @@ class Records extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
+      all_data: [],
+      user_data: [],
       isLoading: false,
       error: null,
-      refresh: false
+      refresh: false,
+      hasValidToken: false,
     };
   }
  
@@ -16,36 +18,36 @@ class Records extends Component {
     this.setState({isLoading : true});
     try {
       const result = await axios.get('/api/history');
-      // console.log(result)
-      this.setState({ data : result.data, isLoading: false});
+      this.setState({ all_data : result.data, isLoading: false});
+
+      const token = localStorage.getItem('token');
+      if (token !== null) {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        }
+        var user_result = await axios.get('/api/submitted', config);
+        this.setState({ user_data : user_result.data.past_submissions, isLoading: false});
+        this.setState({ hasValidToken : true})
+      }
+      
     }
     catch (error) {
       this.setState({ error, isLoading: false});
     }
   }
 
-  // async componentDidUpdate(prevState) {
-  //   if (prevState.refresh !== this.state.refresh) {
-  //     this.setState({isLoading : true});
-  //     this.setState({refresh : false});
-  //     try {
-  //       const result = await axios.get('/api/history');
-  //       console.log(result)
-  //       this.setState({ data : result.data, isLoading: false});
-  //     }
-  //     catch (error) {
-  //       this.setState({ error, isLoading: false});
-  //     }
-  //   }
+  // checkToken() {
+  //   this.setState({hasValidToken: true})
   // }
 
   renderTableData() {
-    return this.state.data.map((data, index) => {
-       const { date_added, fraud, id, platform, sentiment, text, url } = data //destructuring
+    return this.state.all_data.map((all_data) => {
+       const { date_added, fraud, id, platform, sentiment, text, url, username_submitted} = all_data //destructuring
        return (
           <tr key={id}>
             <td>{platform}</td>
              <td>{url}</td>
+             <td>{username_submitted}</td>
              {/* <td>{text}</td> */}
              <td>{sentiment}</td>
              <td>{fraud}</td>
@@ -53,10 +55,29 @@ class Records extends Component {
           </tr>
        )
     })
- }
+  }
+
+  renderUserData() {
+    return this.state.user_data.map((user_data ) => {
+       const { date_added, fraud, id, platform, sentiment, text, url, username_submitted} = user_data    //destructuring
+       return (
+          <tr key={id}>
+            <td>{platform}</td>
+             <td>{url}</td>
+             <td>{username_submitted}</td>
+             {/* <td>{text}</td> */}
+             <td>{sentiment}</td>
+             <td>{fraud}</td>
+             <td>{date_added}</td>
+          </tr>
+       )
+    })
+  }
+
   refresh() {
     this.setState ({ refresh: true });
     this.renderTableData();
+    this.renderUserData();
   }
 
   render() {
@@ -70,8 +91,29 @@ class Records extends Component {
       return <p>Loading ...</p>;
     }
 
-    return ( 
-      <>
+    //TODO: Rewrite this hot garbage
+    var all_records = 
+      <div className = 'table-responsive' style = {{"maxHeight": "50%", "overflowY" :"auto","overflowX" :"hidden"}}>
+        <table id='history' className = 'table-hover table' >
+            <tbody>
+            <tr>
+              {/* Maybe make this dynamic? */}
+              <th>Platform</th>
+              <th>URL</th>
+              {/* <th>Text</th> */}
+              <th>By User</th>
+              <th>Sentiments</th>
+              <th>Falsehood</th>
+              <th>Date Added</th>
+            </tr>
+              {this.renderTableData()}
+            </tbody>
+        </table>
+      </div>;
+
+    var user_records = 
+      <div className="mb-5 w-100">
+        <h2 className="mb-5">Your past analyses</h2>
         <div className = 'table-responsive' style = {{"maxHeight": "50%", "overflowY" :"auto","overflowX" :"hidden"}}>
           <table id='history' className = 'table-hover table' >
               <tbody>
@@ -80,17 +122,29 @@ class Records extends Component {
                 <th>Platform</th>
                 <th>URL</th>
                 {/* <th>Text</th> */}
+                <th>User</th>
                 <th>Sentiments</th>
                 <th>Falsehood</th>
                 <th>Date Added</th>
               </tr>
-                {this.renderTableData()}
+                {this.renderUserData()}
               </tbody>
           </table>
         </div>
-        <span><button type="submit" className = "btn btn-primary" onClick = {this.refresh.bind(this)}>Refresh</button></span>
-      </>
-    )
+      </div>;
+
+    if (this.state.hasValidToken) {
+      return ( 
+        <>
+          {all_records}
+          <hr></hr>
+          {user_records}
+        </>
+      );
+    }
+    else {
+      return (<>{all_records}</>);
+    }
   }
 }
 

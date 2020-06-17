@@ -21,8 +21,9 @@ def evaluate_link():
     url = request.get_json()
     url = str(url.get('search')).strip()
     results = scraper(url)
-    # results['text'] = clean_text(results['text'])    
+
     results['sentiment_result'] = results['fraud_result'] = ''
+    results['fraud_probab'] = ''
 
     current_user = get_jwt_identity()
     current_user = current_user if current_user else 'Guest'
@@ -42,12 +43,14 @@ def evaluate_link():
       _text = remove_noise(word_tokenize(results['text']))
       results['sentiment_result'] = sentiment.classify(dict([token, True] for token in _text))
       _fraud_result = log_model.predict([results['text']])
+      results['fraud_probab'] = max(log_model.predict_proba([results['text']])[0])
       results['fraud_result'] = 'Fake' if _fraud_result[0] == 'fake' else 'Real'
       Link.add_link(url = url, platform = results['platform'], text = results['text'],\
                     sentiment = results['sentiment_result'], fraud = results['fraud_result'],\
-                    username = current_user) 
+                    fraud_probability = results['fraud_probab'], username = current_user) 
     
-    return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'], fraud = results['fraud_result'])
+    return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'],\
+                   fraud = results['fraud_result'], fraud_probability = results['fraud_probab'])
 
 @app.route('/api/history')
 def get_records():
@@ -78,9 +81,6 @@ def login():
     if user and token is not None:
         response = jsonify(message = f'Welcome {user.username}', token = token)
         response.status_code = 201
-        #Create a session for logged-in user.
-        #session['user_id'] = data['username']
-        #return redirect(url_for('/'))
         return response
     else:
        return bad_request('Username or password wrong.')
@@ -91,4 +91,3 @@ def view_past_records():
     current_user = get_jwt_identity()
     past_submissions = Link.get_user_past_records(username = current_user)
     return jsonify(logged_in_as = current_user, past_submissions = past_submissions)
-

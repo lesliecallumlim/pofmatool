@@ -23,6 +23,7 @@ class Link(db.Model, Serializer):
     sentiment = db.Column(db.String(50))
     date_added = db.Column(db.DateTime, default = datetime.now)
     fraud = db.Column(db.String(20))
+    fraud_probability = db.Column(db.Float(precision = '2,1'))
     f_deleted = db.Column(db.Boolean, default = False)
     username_submitted = db.Column(db.String(64), default = 'Guest')
 
@@ -31,8 +32,9 @@ class Link(db.Model, Serializer):
         records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).limit(records)
         return Link.serialize_list(records)
 
-    def add_link(url, platform, text, sentiment, fraud, username):
-        _link = Link(url = url, text = text, platform = platform, sentiment = sentiment, fraud = fraud, username_submitted = username)
+    def add_link(url, platform, text, sentiment, fraud, fraud_probability, username):
+        _link = Link(url = url, text = text, platform = platform, sentiment = sentiment,\
+                     fraud = fraud, fraud_probability = fraud_probability, username_submitted = username)
         db.session.add(_link)
         db.session.commit()
 

@@ -13,9 +13,6 @@ class UserPanel extends Component {
             isLoggedIn: false
         }
     }
-
-    
-
     async formHandler(values, type) {
         let currentComponent = this;
         currentComponent.setState({loading: true});

@@ -9,6 +9,9 @@ from nltk.tokenize import word_tokenize
 from flask_jwt_extended import (jwt_required, jwt_optional, get_jwt_identity)
 
 
+#app.config['JWT_HEADER_TYPE'] = None
+
+
 # Flask now automatically returns a python dictionary in json strings
 @app.route('/api/results', methods = ['GET'])
 def get_results():
@@ -16,7 +19,7 @@ def get_results():
 
 
 @app.route('/api/evaluate', methods = ['POST'])
-@jwt_optional
+@jwt_optional #Gave error for Guests trying to search since there is no JWT token generated for them.
 def evaluate_link():
     url = request.get_json()
     url = str(url.get('search')).strip()
@@ -25,7 +28,7 @@ def evaluate_link():
     results['sentiment_result'] = results['fraud_result'] = ''
 
     current_user = get_jwt_identity()
-    current_user = current_user if current_user else 'Guest'
+    print(current_user)
 
     #TODO: Split the database function into a separate function instead
     #TODO: Create a custom try catch block for invalid URLs
@@ -89,6 +92,7 @@ def login():
 @jwt_optional
 def view_past_records():
     current_user = get_jwt_identity()
+    print(current_user)
     past_submissions = Link.get_user_past_records(username = current_user)
     return jsonify(logged_in_as = current_user, past_submissions = past_submissions)
 

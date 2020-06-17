@@ -34,9 +34,25 @@ class Search extends Component {
         currentComponent.setState({loading: true});
         e.preventDefault();
         const token = localStorage.getItem('token');
+        var auth;
+        //Since /api/evaluate endpoint requires a JWT Header
+        //Have a condition to set JWT header with '${auth}. "" -> Guest.
+        if(token == null){
+            auth = "";
+        }else{
+            auth = `Bearer ${token}`
+        }
+        console.log(auth)
         const config = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { 
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: `${auth}`
+                //Authorization: `Bearer ${token}` 
+            },
+            data: {},
         };
+
         const formFields = this.state;
         axios.post('/api/evaluate', formFields, config)
             .then(function(response) {
@@ -48,6 +64,7 @@ class Search extends Component {
                 currentComponent.setState({fraud: _results.fraud})
             })
             .catch(function(error){
+                console.log(error.response.data)
                 currentComponent.setState({loading: false})
                 currentComponent.setState({results: error})
             });

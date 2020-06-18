@@ -22,7 +22,8 @@
     "react-scrollspy-nav": "^1.2.4",
     "react-simple-popover": "^0.2.4",
     "react-tiny-popover": "^5.0.1",
-    "reactjs-popup": "^1.5.0"
+    "reactjs-popup": "^1.5.0",
+    "yup": "^0.29.1"
   },
   "scripts": {
     "start": "react-scripts start",

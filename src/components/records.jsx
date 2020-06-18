@@ -36,21 +36,17 @@ class Records extends Component {
     }
   }
 
-  // checkToken() {
-  //   this.setState({hasValidToken: true})
-  // }
-
   renderTableData() {
     return this.state.all_data.map((all_data) => {
-       const { date_added, fraud, id, platform, sentiment, text, url, username_submitted} = all_data //destructuring
+       const { date_added, fraud, id, platform, sentiment, fraud_probability, url, username_submitted} = all_data //destructuring
+       const fraudProbability = Math.round(fraud_probability * 100)
        return (
           <tr key={id}>
             <td>{platform}</td>
              <td>{url}</td>
              <td>{username_submitted}</td>
-             {/* <td>{text}</td> */}
              <td>{sentiment}</td>
-             <td>{fraud}</td>
+             <td>{fraud} - {fraudProbability}%</td>
              <td>{date_added}</td>
           </tr>
        )
@@ -59,15 +55,15 @@ class Records extends Component {
 
   renderUserData() {
     return this.state.user_data.map((user_data ) => {
-       const { date_added, fraud, id, platform, sentiment, text, url, username_submitted} = user_data    //destructuring
+       const { date_added, fraud, id, platform, sentiment, fraud_probability, url, username_submitted} = user_data    //destructuring
+       const fraudProbability = Math.round(fraud_probability * 100)
        return (
           <tr key={id}>
             <td>{platform}</td>
              <td>{url}</td>
              <td>{username_submitted}</td>
-             {/* <td>{text}</td> */}
              <td>{sentiment}</td>
-             <td>{fraud}</td>
+             <td>{fraud} - {fraudProbability}%</td>
              <td>{date_added}</td>
           </tr>
        )
@@ -81,7 +77,7 @@ class Records extends Component {
   }
 
   render() {
-    const { data, isLoading, error } = this.state;
+    const { isLoading, error } = this.state;
 
     if (error) {
       return <p>{error.message}</p>;
@@ -101,9 +97,9 @@ class Records extends Component {
               <th>Platform</th>
               <th>URL</th>
               {/* <th>Text</th> */}
-              <th>By User</th>
+              <th>User</th>
               <th>Sentiments</th>
-              <th>Falsehood</th>
+              <th>Falsehood (%)</th>
               <th>Date Added</th>
             </tr>
               {this.renderTableData()}

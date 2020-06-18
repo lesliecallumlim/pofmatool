@@ -16,7 +16,8 @@ class Search extends Component {
             fraud: '', 
             loading: false,
             sentiment: '',
-            modalClosed: false	
+            modalClosed: false,
+            fraudProbability: '',
         }
     }
 
@@ -62,6 +63,7 @@ class Search extends Component {
                 currentComponent.setState({url: _results.url})
                 currentComponent.setState({sentiment: _results.sentiment})
                 currentComponent.setState({fraud: _results.fraud})
+                currentComponent.setState({fraudProbability: Math.round(_results.fraud_probability * 100)})
             })
             .catch(function(error){
                 console.log(error.response.data)
@@ -101,7 +103,7 @@ class Search extends Component {
                     <h4>Keywords: </h4>
                     <p>{this.state.results}</p>
                     <h4>Falsehood:</h4>
-                    <span style={{textTransform: 'capitalize'}} className ={"badge p-2 mr-1 mb-3 badge-" + fraud_color}>{this.state.fraud}</span>
+                    <span style={{textTransform: 'capitalize'}} className ={"badge p-2 mr-1 mb-3 badge-" + fraud_color}>{this.state.fraud} - {this.state.fraudProbability}%</span>
                     <h4>Sentiments: </h4>  
                     <span className ={"badge p-2 mr-1 mb-3 badge-" + sentiment_color}>{this.state.sentiment }</span>
                     <h4>What do you think?</h4>

@@ -3,6 +3,8 @@ import './../App.css';
 import Popup from "reactjs-popup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
+import * as Yup from 'yup';
+
 
 class UserPanel extends Component {
     constructor(props) {
@@ -70,6 +72,15 @@ class UserPanel extends Component {
                     ) {
                         errors.email = 'Invalid email address';
                     }
+
+                    else if (!values.username) {
+                        errors.username = 'Required'
+                    }
+
+                    else if (values.password !== values.verify_password) {
+                        errors.password = 'Please check your password!'
+                    }
+
                     return errors;
                 }}
 
@@ -84,11 +95,12 @@ class UserPanel extends Component {
             <div>
                 <Form className =  "registrationForm">
                     <Field type="username" name="username" placeHolder = "Your username." className = "inputFields"/>
-                    <ErrorMessage name="email" component="span"/>
+                    <ErrorMessage name="username" component="span"/>
                     <Field type="email" name="email" placeHolder = "Your email." className = "inputFields"/>
                     <ErrorMessage name="email" component="div"/>
                     <Field type="password" placeHolder = "Your password." name = "password" className = "inputFields" />
                     <ErrorMessage name="password" component="div"/>
+                    <Field type="password" placeHolder = "Verify password." name = "verify_password" className = "inputFields" />
                     <Popup modal 
                         // contentStyle = {{ "maxWidth": "500px", "maxHeight": "100%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center", "border-radius": "20px", } }
                         trigger = {<button type="submit" className = "inputFields submit" disabled={!(isValid && dirty)}>Submit</button>}>

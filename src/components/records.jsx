@@ -89,7 +89,7 @@ class Records extends Component {
 
     //TODO: Rewrite this hot garbage
     var all_records = 
-      <div className = 'table-responsive' style = {{"maxHeight": "50%", "overflowY" :"auto","overflowX" :"hidden"}}>
+      <div className = 'table-responsive' style = {{"maxHeight": "25%", "overflowY" :"auto","overflowX" :"hidden"}}>
         <table id='history' className = 'table-hover table' >
             <tbody>
             <tr>
@@ -110,7 +110,7 @@ class Records extends Component {
     var user_records = 
       <div className="mb-5 w-100">
         <h2 className="mb-5">Your past analyses</h2>
-        <div className = 'table-responsive' style = {{"maxHeight": "50%", "overflowY" :"auto","overflowX" :"hidden"}}>
+        <div className = 'table-responsive' style = {{"maxHeight": "25%", "overflowY" :"auto","overflowX" :"hidden"}}>
           <table id='history' className = 'table-hover table' >
               <tbody>
               <tr>

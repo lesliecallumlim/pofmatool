@@ -244,6 +244,7 @@ button:active {
     width: 100%;
     /*margin-bottom: auto;*/
   }
+  
   #sideNav .navbar-collapse .navbar-nav {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;

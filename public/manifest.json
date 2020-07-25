@@ -1,0 +1,14 @@
+{
+    "background_color": "#1f3044",
+    "description": "Pofma.me",
+    "dir": "auto",
+    "display": "fullscreen",
+    "lang": "en",
+    "name": "Pofma.me",
+    "orientation": "portrait",
+    "prefer_related_applications": true,
+    "related_applications": [],
+    "short_name": "Pofma",
+    "start_url": "",
+    "theme_color": "#1f3044"
+}

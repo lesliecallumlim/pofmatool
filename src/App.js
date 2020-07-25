@@ -112,6 +112,10 @@ class App extends Component {
             <li className="nav-item">
               <UserPanel/>
             </li>
+            </ul>
+        </div>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav">
             <li className="nav-item">
               <a className="nav-link active" href="#about">About</a>
             </li>

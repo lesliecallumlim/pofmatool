@@ -9,7 +9,7 @@
     "prefer_related_applications": true,
     "related_applications": [],
     "short_name": "Pofma",
-    "start_url": "./index.html",
+    "start_url": "/",
     "theme_color": "#1f3044",
     "ios": {},
      "icons": [

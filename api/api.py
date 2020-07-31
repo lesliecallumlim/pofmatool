@@ -29,7 +29,6 @@ def evaluate_link():
     results['fraud_probab'] = ''
 
     current_user = get_jwt_identity()
-    print(current_user)
 
     #TODO: Split the database function into a separate function instead
     #TODO: Create a custom try catch block for invalid URLs
@@ -62,6 +61,18 @@ def get_records():
 @app.route('/api/trending', methods = ['GET'])
 def get_trending():
     return jsonify(Link().get_trending())
+
+@app.route('/api/searchRecords', methods = ['GET'])
+def get_past_content():
+    platform = request.args.get('platform')
+    search_string = request.args.get('search_string')
+    current_platforms = ['All', 'Facebook', 'Twitter', 'Instagram', 'User']
+    if platform is None or search_string is None:
+        return bad_request('Invalid input!')
+    elif platform not in current_platforms:
+        return bad_request('Platform is not supported!')
+    results = Link().get_past_content(platform, search_string)
+    return jsonify(results)
 
 @app.route('/api/register', methods = ['POST'])
 def create_user():

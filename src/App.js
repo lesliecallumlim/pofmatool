@@ -4,6 +4,7 @@ import './App.css';
 import ResultChart from './components/charts.jsx';
 import Trending from './components/trending.jsx';
 import Records from './components/records.jsx';
+import SearchRecords from './components/searchRecords.jsx';
 import Search from './components/search.jsx';
 import UserPanel from './components/user_panel.jsx';
 import Highcharts from 'highcharts/highstock'
@@ -106,8 +107,16 @@ class App extends Component {
           <Records />
         </div>
       </section>
+
+      <hr className="m-0"></hr>
+      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="search">
+        <div className="w-100">
+          <h2 className="mb-5">Past Analyses</h2>
+          <SearchRecords />
+        </div>
+      </section>
       
-    <ScrollspyNav scrollTargetIds ={ ['about', 'trending', 'methodology', 'statistics', 'records'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
+    <ScrollspyNav scrollTargetIds ={ ['about', 'trending', 'methodology', 'statistics', 'records', 'search'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
         <a className="navbar-brand" href="#">
         <span className="d-block d-lg-none">pofma checker</span>
@@ -141,6 +150,9 @@ class App extends Component {
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#records">History</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#search">Search</a>
             </li>
           </ul>
         </div>

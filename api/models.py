@@ -45,9 +45,20 @@ class Link(db.Model, Serializer):
         fake_news = func.sum(case([(cls.fraud == 'Fake', 1)], else_= 0)).label('fake_news')
         summary = cls.query.with_entities(cls.platform, real_news, fake_news).group_by(cls.platform).filter(cls.f_deleted != True).all()
         return summary
+
     @classmethod
     def get_user_past_records(cls, username, records = 30): 
         records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == username)).order_by(cls.date_added.desc()).limit(records)
+        return Link.serialize_list(records)
+
+    @classmethod
+    def get_past_content(cls, platform, search_string):
+        if platform == 'All':
+            records = cls.query.filter(and_(cls.f_deleted != True, cls.text.like(f'%{search_string}%'))).all()
+        elif platform == 'User':
+            records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == search_string)).all()
+        else:
+            records = cls.query.filter(and_(cls.f_deleted != True, cls.text.like(f'%{search_string}%'), cls.platform == platform)).all()
         return Link.serialize_list(records)
 
     @classmethod

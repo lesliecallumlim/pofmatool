@@ -278,6 +278,7 @@ section.site-section .site-item .site-date {
   section.site-section .site-item .site-date {
     min-width: 18rem;
   }
+
 }
 @media (min-width: 992px) {
   section.site-section {
@@ -298,10 +299,17 @@ a:hover, a:focus, a:active {
   color: #FB9039;
 }
 
+.truncate {
+  /* height: 250px; */
+  /* white-space: nowrap; */
+  /* overflow: hidden; */
+  /* text-overflow: ellipsis; */
+}
+
 .history {
   text-align: center !important;
   border-collapse: collapse !important;
-  width: 100% !important;
+  width: 100% !important;  
 }
 
 .history td, .history th {

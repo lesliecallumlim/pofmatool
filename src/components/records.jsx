@@ -89,7 +89,7 @@ class Records extends Component {
 
     //TODO: Rewrite this hot garbage
     var all_records = 
-      <div className = 'table-responsive' style = {{"maxHeight": "25%", "overflowY" :"auto","overflowX" :"hidden"}}>
+      <div className = 'table-responsive history' style = {{"maxHeight": "25%", "overflowY" :"auto","overflowX" :"hidden"}}>
         <table id='history' className = 'table-hover table' >
             <tbody>
             <tr>
@@ -103,7 +103,7 @@ class Records extends Component {
               <th>Date Added</th>
             </tr>
               {this.renderTableData()}
-            </tbody>
+            </tbody>        
         </table>
       </div>;
 
@@ -111,7 +111,7 @@ class Records extends Component {
       <div className="mb-5 w-100">
         <h2 className="mb-5">Your past analyses</h2>
         <div className = 'table-responsive' style = {{"maxHeight": "25%", "overflowY" :"auto","overflowX" :"hidden"}}>
-          <table id='history' className = 'table-hover table' >
+          <table id='history' className = 'table-hover table history' >
               <tbody>
               <tr>
                 {/* Maybe make this dynamic? */}

@@ -55,9 +55,13 @@ def evaluate_link():
     return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'],\
                    fraud = results['fraud_result'], fraud_probability = results['fraud_probab'])
 
-@app.route('/api/history')
+@app.route('/api/history', methods = ['GET'])
 def get_records():
   return jsonify(Link().get_past_records())
+
+@app.route('/api/trending', methods = ['GET'])
+def get_trending():
+    return jsonify(Link().get_trending())
 
 @app.route('/api/register', methods = ['POST'])
 def create_user():

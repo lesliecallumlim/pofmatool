@@ -1,6 +1,6 @@
 # SQLLite model
 from api import db
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import and_, or_, false, true, func, case
 from sqlalchemy.inspection import inspect
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -49,6 +49,17 @@ class Link(db.Model, Serializer):
     def get_user_past_records(cls, username, records = 30): 
         records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == username)).order_by(cls.date_added.desc()).limit(records)
         return Link.serialize_list(records)
+
+    @classmethod
+    def get_trending(cls, days = 30, records = 5):
+        trending = cls.query\
+                    .with_entities(cls.id, cls.platform, cls.url, func.count(cls.url).label('count'), cls.date_added, cls.sentiment, cls.fraud, cls.fraud_probability)\
+                    .filter(cls.date_added < datetime.today() - timedelta(days))\
+                    .group_by(cls.url)\
+                    .order_by(func.count().desc())\
+                    .limit(records)\
+                    .all()
+        return trending
 
 class User(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)

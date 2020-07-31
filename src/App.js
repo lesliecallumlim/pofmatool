@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 // Import charts
 import ResultChart from './components/charts.jsx';
+import Trending from './components/trending.jsx';
 import Records from './components/records.jsx';
 import Search from './components/search.jsx';
 import UserPanel from './components/user_panel.jsx';
@@ -50,6 +51,16 @@ class App extends Component {
         </section>
       </div>
 
+
+      <hr className="m-0"></hr>
+      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="trending">
+        <div className="w-100">
+          <h2 className="mb-5">Trending</h2>
+          <Trending />
+        </div>
+      </section>
+      
+
       <hr className="m-0"></hr>
       <section className="site-section p-3 p-lg-5 d-flex justify-content-center" id="methodology">
       <div className="w-100">
@@ -96,7 +107,7 @@ class App extends Component {
         </div>
       </section>
       
-    <ScrollspyNav scrollTargetIds ={ ['about', 'methodology', 'statistics', 'records'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
+    <ScrollspyNav scrollTargetIds ={ ['about', 'trending', 'methodology', 'statistics', 'records'] } activeNavClass= "active" offset={0} ></ScrollspyNav>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
         <a className="navbar-brand" href="#">
         <span className="d-block d-lg-none">pofma checker</span>
@@ -118,6 +129,9 @@ class App extends Component {
           <ul className="navbar-nav">
             <li className="nav-item">
               <a className="nav-link active" href="#about">About</a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="#trending">Trending </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#methodology">Methodology</a>

@@ -111,7 +111,7 @@ class App extends Component {
       <hr className="m-0"></hr>
       <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="search">
         <div className="w-100">
-          <h2 className="mb-5">Past Analyses</h2>
+          <h2 className="mb-5">Search</h2>
           <SearchRecords />
         </div>
       </section>

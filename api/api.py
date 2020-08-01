@@ -1,5 +1,5 @@
-from flask import request, jsonify
-from api import app
+from flask import request, jsonify, make_response
+from api import app, limiter
 # Custom modules
 from api.errors import bad_request 
 from api.scraper import scraper
@@ -8,9 +8,14 @@ from api.sentiment import remove_noise, load_models
 from nltk.tokenize import word_tokenize
 from flask_jwt_extended import (jwt_required, jwt_optional, get_jwt_identity)
 
+# Obviously we don't limit ourselves when in testing
+@limiter.request_filter
+def ip_whitelist():
+    return request.remote_addr == "127.0.0.1"
 
-#app.config['JWT_HEADER_TYPE'] = None
-
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    return make_response( jsonify(error="Too many searches in a minute! %s" % e.description), 429)
 
 # Flask now automatically returns a python dictionary in json strings
 @app.route('/api/results', methods = ['GET'])
@@ -19,6 +24,7 @@ def get_results():
 
 
 @app.route('/api/evaluate', methods = ['POST'])
+@limiter.limit("1 per minute")
 @jwt_optional #Gave error for Guests trying to search since there is no JWT token generated for them.
 def evaluate_link():
     url = request.get_json()

@@ -6,6 +6,7 @@ pip3 install flask-sqlalchemy
 pip3 install flask-migrate
 pip3 install flask_login
 pip3 install pyjwt
+pip3 install flask_limiter
 
 pip3 install nltk
 pip3 install sklearn

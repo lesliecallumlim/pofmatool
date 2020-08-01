@@ -68,7 +68,7 @@ class Search extends Component {
             .catch(function(error){
                 console.log(error.response.data)
                 currentComponent.setState({loading: false})
-                currentComponent.setState({results: error})
+                currentComponent.setState({results: error.response.data.error})
             });
     }
 

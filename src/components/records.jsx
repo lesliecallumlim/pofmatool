@@ -119,12 +119,6 @@ class Records extends Component {
     })
   }
 
-  // refresh() {
-  //   this.setState ({ refresh: true });
-  //   this.renderTableData();
-  //   this.renderUserData();
-  // }
-
   render() {
     const { isLoading, error } = this.state;
 

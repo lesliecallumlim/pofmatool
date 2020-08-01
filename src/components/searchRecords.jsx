@@ -73,6 +73,10 @@ class SearchRecords extends Component {
         let content;
         if (!this.state.results == "") {
             var all_records = 
+            <>
+            <hr></hr>
+            <h3 >Your results</h3> 
+            <hr style = {{ "margin-top": "-0.1em"}}></hr>
             <div className = 'table-responsive history' style = {{"maxHeight": "30%", "overflowY" :"auto","overflowX" :"hidden"}}>
             <table id='history' className = 'table-hover table' >
                 <tbody>
@@ -88,7 +92,8 @@ class SearchRecords extends Component {
                     {this.renderTableData()}
                 </tbody>        
             </table>
-            </div>;
+            </div>
+            </>;
         }
         
         if (this.state.loading) {
@@ -116,6 +121,7 @@ class SearchRecords extends Component {
                         <option className="dropdown-item" value="Facebook">Facebook</option>
                         <option className="dropdown-item" value="Twitter">Twitter</option>
                         <option className="dropdown-item" value="Instagram">Instagram</option>
+                        <option className="dropdown-item" value="LinkedIn">LinkedIn</option>
                         <option className="dropdown-item" value="User">User</option>
                     </select>
                 <div>

@@ -25,7 +25,7 @@ def get_results():
 
 @app.route('/api/evaluate', methods = ['POST'])
 @limiter.limit("1 per minute")
-@jwt_optional #Gave error for Guests trying to search since there is no JWT token generated for them.
+@jwt_optional 
 def evaluate_link():
     url = request.get_json()
     url = str(url.get('search')).strip()
@@ -36,8 +36,6 @@ def evaluate_link():
 
     current_user = get_jwt_identity()
 
-    #TODO: Split the database function into a separate function instead
-    #TODO: Create a custom try catch block for invalid URLs
     if 'platform' in results: # Check if the key is created by the scraper function
       # Sentiment analysis
       # Only load model if it not loaded. 
@@ -73,7 +71,7 @@ def get_trending():
 def get_past_content():
     platform = request.args.get('platform')
     search_string = request.args.get('search_string')
-    current_platforms = ['All', 'Facebook', 'Twitter', 'Instagram', 'User']
+    current_platforms = ['All', 'Facebook', 'Twitter', 'Instagram', 'LinkedIn', 'User']
     if platform is None or search_string is None:
         return bad_request('Invalid input!')
     elif platform not in current_platforms:
@@ -114,9 +112,6 @@ def login():
 @jwt_optional
 def view_past_records():
     current_user = get_jwt_identity()
-    # startPage = 1
     startPage = int(request.args.get('start'))
     past_submissions = Link.get_user_past_records(username = current_user, start = startPage)
-    # past_submissions = Link.get_user_past_records(username = current_user, page = startPage)
     return jsonify(logged_in_as = current_user, past_submissions = past_submissions, page = startPage)
-    # return jsonify(logged_in_as = current_user, past_submissions = past_submissions)

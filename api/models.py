@@ -28,8 +28,9 @@ class Link(db.Model, Serializer):
     username_submitted = db.Column(db.String(64), default = 'Guest')
 
     @classmethod
-    def get_past_records(cls, records = 30): 
-        records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).limit(records)
+    def get_past_records(cls, start = 1, records = 5): 
+        # records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).limit(records)
+        records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).paginate(start, records, False).items
         return Link.serialize_list(records)
 
     def add_link(url, platform, text, sentiment, fraud, fraud_probability, username):
@@ -47,8 +48,8 @@ class Link(db.Model, Serializer):
         return summary
 
     @classmethod
-    def get_user_past_records(cls, username, records = 30): 
-        records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == username)).order_by(cls.date_added.desc()).limit(records)
+    def get_user_past_records(cls, username, start = 1, records = 5): 
+        records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == username)).order_by(cls.date_added.desc()).paginate(start, records, False).items
         return Link.serialize_list(records)
 
     @classmethod

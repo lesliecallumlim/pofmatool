@@ -15,7 +15,7 @@ from flask_jwt_extended import (jwt_required, jwt_optional, get_jwt_identity)
 
 @app.errorhandler(429)
 def ratelimit_handler(e):
-    return make_response( jsonify(error="Too many searches in a minute! %s" % e.description), 429)
+    return make_response(jsonify(error=f'Too many searches in a minute! {e.description}.'), 429)
 
 # Flask now automatically returns a python dictionary in json strings
 @app.route('/api/results', methods = ['GET'])
@@ -62,7 +62,8 @@ def evaluate_link():
 
 @app.route('/api/history', methods = ['GET'])
 def get_records():
-  return jsonify(Link().get_past_records())
+    startPage = int(request.args.get('start'))
+    return jsonify(results = Link.get_past_records(start = startPage), page = startPage)
 
 @app.route('/api/trending', methods = ['GET'])
 def get_trending():
@@ -113,6 +114,9 @@ def login():
 @jwt_optional
 def view_past_records():
     current_user = get_jwt_identity()
-    print(current_user)
+    # startPage = 1
+    startPage = int(request.args.get('start'))
     past_submissions = Link.get_user_past_records(username = current_user)
-    return jsonify(logged_in_as = current_user, past_submissions = past_submissions)
+    # past_submissions = Link.get_user_past_records(username = current_user, page = startPage)
+    return jsonify(logged_in_as = current_user, past_submissions = past_submissions, page = startPage)
+    # return jsonify(logged_in_as = current_user, past_submissions = past_submissions)

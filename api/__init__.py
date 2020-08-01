@@ -16,6 +16,6 @@ jwt = JWTManager(app)
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"]
+    # default_limits=["200 per day", "50 per hour"]
 )
 from api import api, models 

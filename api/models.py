@@ -64,14 +64,14 @@ class Link(db.Model, Serializer):
         return Link.serialize_list(records)
 
     @classmethod
-    def get_trending(cls, days = 30, records = 5):
+    def get_trending(cls, records = 5):
         trending = cls.query\
                     .with_entities(cls.id, cls.platform, cls.url, func.count(cls.url).label('count'), cls.date_added, cls.sentiment, cls.fraud, cls.fraud_probability)\
-                    .filter(cls.date_added < datetime.today() - timedelta(days))\
                     .group_by(cls.url)\
                     .order_by(func.count().desc())\
                     .limit(records)\
                     .all()
+                                        # .filter(cls.date_added < datetime.today() - timedelta(days))\
         return trending
 
 class User(db.Model, Serializer):

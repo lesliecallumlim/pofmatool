@@ -9,9 +9,9 @@ from nltk.tokenize import word_tokenize
 from flask_jwt_extended import (jwt_required, jwt_optional, get_jwt_identity)
 
 # Obviously we don't limit ourselves when in testing
-@limiter.request_filter
-def ip_whitelist():
-    return request.remote_addr == "127.0.0.1"
+# @limiter.request_filter
+# def ip_whitelist():
+    # return request.remote_addr == "127.0.0.1"
 
 @app.errorhandler(429)
 def ratelimit_handler(e):

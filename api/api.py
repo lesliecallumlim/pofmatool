@@ -116,7 +116,7 @@ def view_past_records():
     current_user = get_jwt_identity()
     # startPage = 1
     startPage = int(request.args.get('start'))
-    past_submissions = Link.get_user_past_records(username = current_user)
+    past_submissions = Link.get_user_past_records(username = current_user, start = startPage)
     # past_submissions = Link.get_user_past_records(username = current_user, page = startPage)
     return jsonify(logged_in_as = current_user, past_submissions = past_submissions, page = startPage)
     # return jsonify(logged_in_as = current_user, past_submissions = past_submissions)

@@ -49,7 +49,8 @@ class Link(db.Model, Serializer):
 
     @classmethod
     def get_user_past_records(cls, username, start = 1, records = 5): 
-        records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == username)).order_by(cls.date_added.desc()).paginate(start, records, False).items
+        records = cls.query.filter(and_(cls.f_deleted != True, cls.username_submitted == username))\
+                           .order_by(cls.date_added.desc()).paginate(start, records, False).items
         return Link.serialize_list(records)
 
     @classmethod

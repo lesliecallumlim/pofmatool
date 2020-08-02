@@ -67,6 +67,18 @@ def get_records():
 def get_trending():
     return jsonify(Link().get_trending())
 
+
+@app.route('/api/modifyUser', methods = ['POST'])
+@jwt_required
+def ban_user():
+    current_user = get_jwt_identity()
+    data = request.get_json()
+    user_to_ban = User().modify_user(username = current_user, target_user = data['targetUser'], modify_type = data['modifyType'])
+    if user_to_ban is None:
+        return bad_request('Invalid user!')
+    ban_unban = 'banned' if user_to_ban.is_banned is True else 'unbanned'
+    return jsonify(results = f'{user_to_ban.username} is {ban_unban}!')   
+
 @app.route('/api/searchRecords', methods = ['GET'])
 def get_past_content():
     platform = request.args.get('platform')

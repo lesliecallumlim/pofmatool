@@ -79,6 +79,11 @@ def get_past_content():
     results = Link().get_past_content(platform, search_string)
     return jsonify(results)
 
+@app.route('/api/userRecords', methods = ['GET'])
+def get_user_records():
+    results = User().get_users()
+    return jsonify(results)
+
 @app.route('/api/register', methods = ['POST'])
 def create_user():
     data = request.get_json()

@@ -7,6 +7,7 @@ import Records from './components/records.jsx';
 import SearchRecords from './components/searchRecords.jsx';
 import Search from './components/search.jsx';
 import UserPanel from './components/user_panel.jsx';
+import AdminPanel from './components/admin_panel.jsx';
 import Highcharts from 'highcharts/highstock'
 import ScrollspyNav from 'react-scrollspy-nav';
 
@@ -52,6 +53,13 @@ class App extends Component {
         </section>
       </div>
 
+      <hr className="m-0"></hr>
+      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="admin_panel">
+        <div className="w-100">
+          <h2 className="mb-5">Admin Panel</h2>
+          <AdminPanel />
+        </div>
+      </section>
 
       <hr className="m-0"></hr>
       <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="trending">

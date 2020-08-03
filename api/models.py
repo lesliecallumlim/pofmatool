@@ -7,6 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # from flask_login import UserMixin
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 from flask import jsonify 
+from datetime import date 
 
 class Serializer(object):
     def serialize(self):
@@ -45,6 +46,7 @@ class Link(db.Model, Serializer):
         real_news = func.sum(case([(cls.fraud == 'Real', 1)], else_= 0)).label('real_news')
         fake_news = func.sum(case([(cls.fraud == 'Fake', 1)], else_= 0)).label('fake_news')
         summary = cls.query.with_entities(cls.platform, real_news, fake_news).group_by(cls.platform).filter(cls.f_deleted != True).all()
+        print(summary)
         return summary
 
     @classmethod
@@ -81,6 +83,7 @@ class User(db.Model, Serializer):
     password_hash = db.Column(db.String(128))
     is_banned = db.Column(db.Boolean, default = False)
     is_admin = db.Column(db.Boolean, default = False)
+    date_registered = db.Column(db.Date, default = date.today())
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)

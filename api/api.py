@@ -31,8 +31,9 @@ def evaluate_link():
     url = str(url.get('search')).strip()
     results = scraper(url)
 
-    results['sentiment_result'] = results['fraud_result'] = ''
+    results['sentiment_result'] = results['fraud_result'] = '' 
     results['fraud_probab'] = ''
+    results['id'] = ''
 
     current_user = get_jwt_identity()
 
@@ -51,12 +52,15 @@ def evaluate_link():
       _fraud_result = log_model.predict([results['text']])
       results['fraud_probab'] = max(log_model.predict_proba([results['text']])[0])
       results['fraud_result'] = 'Fake' if _fraud_result[0] == 'fake' else 'Real'
-      Link.add_link(url = url, platform = results['platform'], text = results['text'],\
+
+      results['id'] = Link.add_link(url = url, platform = results['platform'], text = results['text'],\
                     sentiment = results['sentiment_result'], fraud = results['fraud_result'],\
-                    fraud_probability = results['fraud_probab'], username = current_user) 
-    
+                    fraud_probability = results['fraud_probab'], username = current_user).id
+    #   results['id'] = link.id
+    # print(results.id)
     return jsonify(results = results['text'], url = url, sentiment = results['sentiment_result'],\
-                   fraud = results['fraud_result'], fraud_probability = results['fraud_probab'])
+                   fraud = results['fraud_result'], fraud_probability = results['fraud_probab'], \
+                    id = results['id'])
 
 @app.route('/api/history', methods = ['GET'])
 def get_records():
@@ -78,6 +82,25 @@ def ban_user():
         return bad_request('Invalid user!')
     ban_unban = 'banned' if user_to_ban.is_banned is True else 'unbanned'
     return jsonify(results = f'{user_to_ban.username} is {ban_unban}!')   
+
+@app.route('/api/provideFeedback', methods = ['POST'])
+@jwt_optional
+def give_feedback():
+    current_user = get_jwt_identity()
+    data = request.get_json()
+    allowed_feedbacks = ['Neutral', 'Great', 'Poor']
+    print(current_user)
+    if 'id' not in data or 'feedback_string' not in data:
+        return bad_request('Feedback ID or feedback is missing.')
+    elif data['feedback_string'] not in allowed_feedbacks:
+        return bad_request('Invalid feedback!')
+    else:
+        feedback = Link().add_feedback(username = current_user, feedback_string = data['feedback_string'], id = data['id'])
+        if feedback is None:
+            return bad_request('Invalid link / unauthorised - please login to give your feedback!')
+        else:
+            return jsonify(message = f'Thank you for your feedback. {feedback.url} has been rated.')
+    
 
 @app.route('/api/searchRecords', methods = ['GET'])
 def get_past_content():

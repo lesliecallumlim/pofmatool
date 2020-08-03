@@ -309,6 +309,7 @@ a:hover, a:focus, a:active {
 .history {
   text-align: center !important;
   border-collapse: collapse !important;
+  overflow-x: auto !important;
   width: 100% !important;  
 }
 

@@ -116,7 +116,7 @@ class SearchRecords extends Component {
                            onChange={(e) => this.inputChangeHandler.call(this, e)} 
                            value={this.state.search} 
                     />
-                    <select id="dropDown" onClick = {this.onPlatformSelect}>
+                    <select className = "form-control" style = {{"max-width" : "20%"}} id="dropDown" onClick = {this.onPlatformSelect}>
                         <option className="dropdown-item" value="All">All</option>
                         <option className="dropdown-item" value="Facebook">Facebook</option>
                         <option className="dropdown-item" value="Twitter">Twitter</option>

@@ -23,7 +23,7 @@ class Records extends Component {
     try {
       const result = await axios.get('/api/history', {params: {start: this.state.startPage}});
       this.setState({ all_data : result.data.results, isLoading: false, startPage: this.state.startPage});
-      if (this.state.all_data === undefined || this.state.all_data.length == 0) {
+      if (this.state.all_data === undefined || this.state.all_data.length === 0) {
         this.setState({lastPage : true});
       }
       else {
@@ -47,7 +47,7 @@ class Records extends Component {
         var user_result = await axios.get('/api/submitted', config);
         this.setState({ user_data : user_result.data.past_submissions, isLoading: false, startPageForUserSubmitted: this.state.startPageForUserSubmitted});
         this.setState({ hasValidToken : true})
-        if (this.state.user_data === undefined || this.state.user_data.length == 0) {
+        if (this.state.user_data === undefined || this.state.user_data.length === 0) {
           this.setState({lastPageForUserSubmitted : true});
         }
         else {
@@ -173,10 +173,10 @@ class Records extends Component {
       </div>;
 
     let btns;
-    if (this.state.startPage == 1) {
+    if (this.state.startPage === 1) {
       btns =  <button type="submit" className = "btn btn-primary allRecords" value = {parseInt(this.state.startPage)+1} onClick = {this.onNext}>Next</button>
     }
-    else if (this.state.startPage != 1 && this.state.lastPage == true) {
+    else if (this.state.startPage !== 1 && this.state.lastPage === true) {
       btns =  <><button type="submit" className = "btn btn-primary allRecords" value = {parseInt(this.state.startPage)-1} onClick = {this.onNext}>Back</button></>;
     }
     else {
@@ -185,10 +185,10 @@ class Records extends Component {
     }
 
     let user_btns;
-    if (this.state.startPageForUserSubmitted == 1) {
+    if (this.state.startPageForUserSubmitted === 1) {
       user_btns = <button type="submit" className = "btn btn-primary" value = {parseInt(this.state.startPageForUserSubmitted)+1} onClick = {this.onNext}>Next</button>
     }
-    else if (this.state.startPageForUserSubmitted != 1 && this.state.lastPageForUserSubmitted == true) {
+    else if (this.state.startPageForUserSubmitted !== 1 && this.state.lastPageForUserSubmitted === true) {
       user_btns = <><button type="submit" className = "btn btn-primary" value = {parseInt(this.state.startPageForUserSubmitted)-1} onClick = {this.onNext}>Back</button></>;
     }
     else {

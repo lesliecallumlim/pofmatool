@@ -27,6 +27,7 @@ class Link(db.Model, Serializer):
     fraud_probability = db.Column(db.Float(precision = '2,1'))
     f_deleted = db.Column(db.Boolean, default = False)
     username_submitted = db.Column(db.String(64), default = 'Guest')
+    feedback = db.Column(db.String(64))
 
     @classmethod
     def get_past_records(cls, start = 1, records = 5): 
@@ -39,6 +40,15 @@ class Link(db.Model, Serializer):
                      fraud = fraud, fraud_probability = fraud_probability, username_submitted = username)
         db.session.add(_link)
         db.session.commit()
+        return _link
+
+    @classmethod
+    def add_feedback(cls, id, feedback_string, username = 'Guest'):
+        _feedback = cls.query.filter(and_(cls.id == id, cls.username_submitted == username)).first()
+        if _feedback is not None:
+            _feedback.feedback = feedback_string
+            db.session.commit()
+            return _feedback
 
     @classmethod
     def get_summarised_records(cls):
@@ -76,6 +86,7 @@ class Link(db.Model, Serializer):
                                         # .filter(cls.date_added < datetime.today() - timedelta(days))\
         return trending
 
+
 class User(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -93,7 +104,7 @@ class User(db.Model, Serializer):
         records = cls.query.filter(cls.is_banned != True).order_by(cls.id.desc()).limit(records)
         return User.serialize_list(records)
 #
-    # @classmethod
+    #@classmethod
     def add_user(username, email, password):
         _user = User(username = username, email = email, password_hash = generate_password_hash(password))
         db.session.add(_user)
@@ -106,3 +117,19 @@ class User(db.Model, Serializer):
             return user, create_access_token(identity = username)
         else:
             return None, None
+
+    @classmethod
+    def modify_user(cls, username, target_user, modify_type):
+        if cls.query.filter(and_(cls.is_admin == True, cls.username == username)) is not None:
+            _user = cls.query.filter(cls.id == target_user).first()
+            if modify_type == 'ban':
+                _user.is_banned = True
+            else:
+                _user.is_banned = False
+            db.session.commit()
+            return _user
+            
+
+            
+
+

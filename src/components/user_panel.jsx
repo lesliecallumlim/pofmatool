@@ -3,8 +3,6 @@ import './../App.css';
 import Popup from "reactjs-popup";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
-import * as Yup from 'yup';
-
 
 class UserPanel extends Component {
     constructor(props) {
@@ -20,7 +18,7 @@ class UserPanel extends Component {
         currentComponent.setState({loading: true});
         // e.preventDefault();
         let api_url;
-        api_url = type == 'login' ? 'login' : 'register';
+        api_url = type === 'login' ? 'login' : 'register';
         
         await axios.post('/api/' + api_url, values)
         .then(function(response) {
@@ -41,7 +39,7 @@ class UserPanel extends Component {
 
     componentDidMount() {
         const loggedIn = localStorage.getItem('loggedIn') === 'true';
-        if (loggedIn == true)
+        if (loggedIn === true)
             this.setState({ isLoggedIn: true});
         else
             this.setState({isLoggedIn: false})

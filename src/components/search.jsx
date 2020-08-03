@@ -18,6 +18,9 @@ class Search extends Component {
             sentiment: '',
             modalClosed: false,
             fraudProbability: '',
+            searchID: '',
+            token: '',
+            feedback_data: '',
         }
     }
 
@@ -38,12 +41,12 @@ class Search extends Component {
         var auth;
         //Since /api/evaluate endpoint requires a JWT Header
         //Have a condition to set JWT header with '${auth}. "" -> Guest.
-        if(token == null){
-            auth = "";
-        }else{
+        if(token == null){ auth = ""; }
+        else { 
             auth = `Bearer ${token}`
+            currentComponent.setState({token: token}) 
         }
-        console.log(auth)
+
         const config = {
             headers: { 
                 'Content-Type': 'application/json',
@@ -63,12 +66,40 @@ class Search extends Component {
                 currentComponent.setState({url: _results.url})
                 currentComponent.setState({sentiment: _results.sentiment})
                 currentComponent.setState({fraud: _results.fraud})
+                currentComponent.setState({searchID: _results.id})
                 currentComponent.setState({fraudProbability: Math.round(_results.fraud_probability * 100)})
             })
             .catch(function(error){
                 console.log(error.response.data)
                 currentComponent.setState({loading: false})
                 currentComponent.setState({results: error.response.data.error})
+            });
+    }
+
+
+    async addFeedback(e) {
+        var auth;
+        var currentComponent = this;
+        if(this.state.token === ''){ auth = ""; }
+        else { auth = `Bearer ${this.state.token}` }
+
+        const searchID = this.state.searchID;
+        const config = {
+            headers: { 
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                // Authorization: `${auth}`
+                Authorization: `Bearer ${this.state.token}` 
+        }};
+        const params = {"feedback_string": e.target.value, "id": searchID};
+        console.log(params);
+        axios.post('/api/provideFeedback', params, config)
+            .then(function(response) {
+                const _results = response.data;
+                currentComponent.setState({feedback_data: response.data.message});
+            })
+            .catch(function(error) {
+                currentComponent.setState({feedback_data: error.response.data.message});
             });
     }
 
@@ -97,7 +128,7 @@ class Search extends Component {
             <div>
                 <hr></hr>
                     <h3 >Your result</h3> 
-                    <hr style = {{ "margin-top": "-0.1em"}}></hr>
+                    <hr style = {{ "marginTop": "-0.1em"}}></hr>
                     <h4>Link Entered: </h4>
                     <p>{this.state.url}</p>
                     <h4>Keywords: </h4>
@@ -107,9 +138,28 @@ class Search extends Component {
                     <h4>Sentiments: </h4>  
                     <span className ={"badge p-2 mr-1 mb-3 badge-" + sentiment_color}>{this.state.sentiment }</span>
                     <h4>What do you think?</h4>
-                    <button className = "btn badge badge-success p-2 mr-1 mb-3">Excellent!</button>
-                    <button className = "btn badge badge-warning p-2 mr-1 mb-3">More work to be done!</button>
-                    <button className = "btn badge badge-dark p-2 mr-1 mb-3">Terrible!</button> 
+
+                    <Popup modal
+                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "textAlign": "center" } }
+                       trigger= {<span><button className = "btn badge badge-success p-2 mr-1 mb-3" value = 'Great' onClick = {this.addFeedback.bind(this)}>Excellent!</button></span> } >
+                        {close => ( 
+                            <> <span>{this.state.feedback_data}</span> <a className="close" onClick={(e) => { close(); window.location.reload(false) }}>x </a></>
+                        )}
+                    </Popup> 
+                    <Popup modal
+                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "textAlign": "center" } }
+                       trigger= {<span><button className = "btn badge badge-warning p-2 mr-1 mb-3" value = 'Neutral' onClick = {this.addFeedback.bind(this)}>Neutral</button></span> } >
+                        {close => ( 
+                            <> <span>{this.state.feedback_data}</span> <a className="close" onClick={(e) => { close(); window.location.reload(false) }}>x </a></>
+                        )}
+                    </Popup> 
+                    <Popup modal
+                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "textAlign": "center" } }
+                       trigger= {<span><button className = "btn badge badge-dark p-2 mr-1 mb-3" value = 'Poor' onClick = {this.addFeedback.bind(this)}>Terrible!</button></span> } >
+                        {close => ( 
+                            <> <span>{this.state.feedback_data}</span> <a className="close" onClick={(e) => { close(); window.location.reload(false) }}>x </a></>
+                        )}
+                    </Popup> 
                     <hr></hr>
             </div>
             }
@@ -118,7 +168,7 @@ class Search extends Component {
                 <div>
                     <hr></hr>
                         <h3 >Your result</h3> 
-                        <hr style = {{ "margin-top": "-0.1em"}}></hr>
+                        <hr style = {{ "marginTop": "-0.1em"}}></hr>
                         <h4>Link Entered: </h4>
                         <p>{this.state.url}</p>
                         <h4>Error: </h4>
@@ -147,7 +197,7 @@ class Search extends Component {
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
                     <div>
                     <Popup modal
-                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "text-align": "center" } }
+                       contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "textAlign": "center" } }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
                         {close => ( 
                             <>{ content } <a 

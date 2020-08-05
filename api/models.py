@@ -128,6 +128,24 @@ class User(db.Model, Serializer):
                 _user.is_banned = False
             db.session.commit()
             return _user
+
+    @classmethod
+    def update_user_records(cls, id, email, is_admin):
+        if cls.query.filter(cls.id == id) is not None:
+            _user = cls.query.filter(cls.id == id).first()
+            _user.email = email
+            if (is_admin == 'true'):
+                _user.is_admin = 1
+            else:
+                _user.is_admin = 0
+            db.session.commit()
+
+    @classmethod
+    def delete_user_records(cls, id):
+        #if cls.query.filter(cls.id == id) is not None:
+        _user = cls.query.filter(cls.id == id).first()  
+        db.session.delete(_user)
+        db.session.commit()
             
 
             

@@ -119,6 +119,19 @@ def get_user_records():
     results = User().get_users()
     return jsonify(results)
 
+@app.route('/api/userRecordsUpdate', methods = ['POST'])
+def update_user_records():
+    new_records = request.get_json()
+    User.update_user_records(id = new_records['id'], email = new_records['email'], is_admin = new_records['is_admin'])
+    return jsonify(message = "Success!")
+
+@app.route('/api/userRecordsDelete', methods = ['POST'])
+def delete_user_records():
+    print(request.get_json())
+    user_records = request.get_json()
+    User.delete_user_records(id = user_records['id'])
+    return jsonify(message = "Success!")
+
 @app.route('/api/register', methods = ['POST'])
 def create_user():
     data = request.get_json()

@@ -44,9 +44,12 @@ function MaterialTableDemo() {
     if(newData.email === "" || validateEmail(newData.email) === false){
       errorList.push("Please enter a valid email")
     }
-
     if(errorList.length < 1){
-      api.patch("/users/"+newData.id, newData)
+      api.post("/userRecordsUpdate", newData, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -104,7 +107,11 @@ function MaterialTableDemo() {
 
   const handleRowDelete = (oldData, resolve) => {
     
-    api.delete("/users/"+oldData.id)
+    api.post("/userRecordsDelete", {id : oldData.id}, {
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
       .then(res => {
         const dataDelete = [...data];
         const index = oldData.tableData.id;
@@ -113,6 +120,7 @@ function MaterialTableDemo() {
         resolve()
       })
       .catch(error => {
+        console.log(error)
         setErrorMessages(["Delete failed! Server error"])
         setIserror(true)
         resolve()

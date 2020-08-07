@@ -104,6 +104,12 @@ class User(db.Model, Serializer):
         else:
             return 'user'
 
+    #@classmethod
+    def add_user(username, email, password):
+        _user = User(username = username, email = email, password_hash = generate_password_hash(password))
+        db.session.add(_user)
+        db.session.commit()
+
     @classmethod
     def get_users(cls, records = 30):
         records = cls.query.filter(cls.is_banned != True).order_by(cls.id.desc()).limit(records)

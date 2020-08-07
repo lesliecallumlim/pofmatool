@@ -35,7 +35,7 @@ def evaluate_link():
     results['fraud_probab'] = ''
     results['id'] = ''
 
-    current_user = get_jwt_identity()
+    current_user = get_jwt_identity()['username']
 
     if 'platform' in results: # Check if the key is created by the scraper function
       # Sentiment analysis
@@ -77,7 +77,7 @@ def get_trending():
 def ban_user():
     current_user = get_jwt_identity()
     data = request.get_json()
-    user_to_ban = User().modify_user(username = current_user, target_user = data['targetUser'], modify_type = data['modifyType'])
+    user_to_ban = User().modify_user(username = current_user['username'], target_user = data['targetUser'], modify_type = data['modifyType'])
     if user_to_ban is None:
         return bad_request('Invalid user!')
     ban_unban = 'banned' if user_to_ban.is_banned is True else 'unbanned'
@@ -95,7 +95,7 @@ def give_feedback():
     elif data['feedback_string'] not in allowed_feedbacks:
         return bad_request('Invalid feedback!')
     else:
-        feedback = Link().add_feedback(username = current_user, feedback_string = data['feedback_string'], id = data['id'])
+        feedback = Link().add_feedback(username = current_user['username'], feedback_string = data['feedback_string'], id = data['id'])
         if feedback is None:
             return bad_request('Invalid link / unauthorised - please login to give your feedback!')
         else:
@@ -114,23 +114,48 @@ def get_past_content():
     results = Link().get_past_content(platform, search_string)
     return jsonify(results)
 
+
+
 @app.route('/api/userRecords', methods = ['GET'])
 def get_user_records():
     results = User().get_users()
-    return jsonify(results)
+    if results is not None:
+        return jsonify(results = results)
+    else:
+        return bad_request('There was an error in the retrieval of database records! Please try again.')
+
+
 
 @app.route('/api/userRecordsUpdate', methods = ['POST'])
+@jwt_required
 def update_user_records():
     new_records = request.get_json()
-    User.update_user_records(id = new_records['id'], email = new_records['email'], is_admin = new_records['is_admin'])
-    return jsonify(message = "Success!")
+    user_to_update = User.update_user_records(id = new_records['id'], email = new_records['email'], is_admin = new_records['is_admin'])
+
+    user_privilege = get_jwt_identity()['is_admin']
+    if user_to_update is not None and user_privilege == 'admin':
+        response = jsonify(message = "Success!")
+        response.status_code = 201
+        return response
+    elif user_privilege != 'admin':
+        return bad_request('Insufficient privileges!')
+    else:
+        return bad_request('Invalid user to target!')
 
 @app.route('/api/userRecordsDelete', methods = ['POST'])
+@jwt_required
 def delete_user_records():
-    print(request.get_json())
     user_records = request.get_json()
-    User.delete_user_records(id = user_records['id'])
-    return jsonify(message = "Success!")
+    if get_jwt_identity()['is_admin'] == 'admin':
+        user_to_delete = User.delete_user_records(id = user_records['id'])
+        if get_user(id = user_records['id']) is None:
+           response = jsonify(message = "Success!")
+           response.status_code = 201
+           return response
+        else: 
+            return bad_request('Invalid user!')
+    else:
+        return bad_request('Insufficient privileges')
 
 @app.route('/api/register', methods = ['POST'])
 def create_user():
@@ -154,8 +179,6 @@ def login():
 
     user, token = User.verify_identity(username = data['username'],password = data['password'])
 
-    print(token)
-
     if user and token is not None:
         response = jsonify(message = f'Welcome {user.username}', token = token)
         response.status_code = 201
@@ -168,5 +191,5 @@ def login():
 def view_past_records():
     current_user = get_jwt_identity()
     startPage = int(request.args.get('start'))
-    past_submissions = Link.get_user_past_records(username = current_user, start = startPage)
-    return jsonify(logged_in_as = current_user, past_submissions = past_submissions, page = startPage)
+    past_submissions = Link.get_user_past_records(username = current_user['username'], start = startPage)
+    return jsonify(logged_in_as = current_user['username'], past_submissions = past_submissions, page = startPage)

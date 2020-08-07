@@ -54,12 +54,9 @@ class App extends Component {
       </div>
 
       <hr className="m-0"></hr>
-      <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="admin_panel">
-        <div className="w-100">
-          <h2 className="mb-5">Admin Panel</h2>
-          <AdminPanel />
-        </div>
-      </section>
+      <AdminPanel />
+
+      
 
       <hr className="m-0"></hr>
       <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="trending">

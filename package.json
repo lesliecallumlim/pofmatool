@@ -14,7 +14,7 @@
     "formik": "^2.1.4",
     "highcharts": "^8.0.4",
     "highcharts-react-official": "^3.0.0",
-    "material-table": "^1.67.1",
+    "material-table": "^1.68.0",
     "react": "^16.13.1",
     "react-awesome-popover": "^6.1.1",
     "react-bootstrap": "^1.0.1",

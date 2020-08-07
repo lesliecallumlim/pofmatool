@@ -38,9 +38,9 @@ class ResultChart extends Component {
     // TODO: To refactor
     let platforms = []; let fake_news = [];  let real_news = [];
     Object.keys(data).forEach(function(key) {
-      platforms.push(data[key][0]);
-      fake_news.push(data[key][2]);
-      real_news.push(data[key][1]);
+      platforms.push(data[key]['platform']);
+      fake_news.push(data[key]['fake_news']);
+      real_news.push(data[key]['real_news']);
     });
 
     const options = {

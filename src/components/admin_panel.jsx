@@ -18,7 +18,7 @@ function parseJwt(token) {
   return JSON.parse(window.atob(base64));
 }
 
-function MaterialTableDemo() {
+function AdminPanel() {
   var columns = [
     { title: 'ID', field: 'id', editable: 'never' },
     { title: 'Username', field: 'username', editable: 'never' },
@@ -142,4 +142,4 @@ function MaterialTableDemo() {
   }
 }
 
-export default MaterialTableDemo;
+export default AdminPanel;

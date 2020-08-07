@@ -98,6 +98,12 @@ class User(db.Model, Serializer):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def check_is_admin(self, is_admin):
+        if self.is_admin:
+            return 'admin'
+        else:
+            return 'user'
+
     @classmethod
     def get_users(cls, records = 30):
         records = cls.query.filter(cls.is_banned != True).order_by(cls.id.desc()).limit(records)

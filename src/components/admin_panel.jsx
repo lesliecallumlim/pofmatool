@@ -11,6 +11,13 @@ function validateEmail(email){
   return re.test(String(email).toLowerCase());
 }
 
+function parseJwt(token) {
+  if (!token) { return; }
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(window.atob(base64));
+}
+
 function MaterialTableDemo() {
   var columns = [
     { title: 'ID', field: 'id', editable: 'never' },
@@ -23,12 +30,21 @@ function MaterialTableDemo() {
     }
   ]
   const [data, setData] = useState([]);
+  const [isAdmin, setRole] = useState(false)
 
   //for error handling
   const [iserror, setIserror] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => { 
+    const token = localStorage.getItem('token');
+    if (token){
+      var userDetails = parseJwt(token)
+      var user_role = userDetails.identity[1]
+      if (user_role == 'admin'){
+        setRole(true)
+      }
+    }
     api.get("/userRecords")
         .then(res => {               
             setData(res.data)
@@ -72,39 +88,7 @@ function MaterialTableDemo() {
 
     }    
   }
-
-  const handleRowAdd = (newData, resolve) => {
-    //validation
-    let errorList = []
-    if(newData.username === undefined){
-      errorList.push("Please enter username")
-    }
-    if(newData.email === undefined || validateEmail(newData.email) === false){
-      errorList.push("Please enter a valid email")
-    }
-
-    if(errorList.length < 1){ //no error
-      api.post("/users", newData)
-      .then(res => {
-        let dataToAdd = [...data];
-        dataToAdd.push(newData);
-        setData(dataToAdd);
-        resolve()
-        setErrorMessages([])
-        setIserror(false)
-      })
-      .catch(error => {
-        setErrorMessages(["Cannot add data. Server error!"])
-        setIserror(true)
-        resolve()
-      })
-    }else{
-      setErrorMessages(errorList)
-      setIserror(true)
-      resolve()
-    }
-  }
-
+  
   const handleRowDelete = (oldData, resolve) => {
     
     api.post("/userRecordsDelete", {id : oldData.id}, {
@@ -126,18 +110,13 @@ function MaterialTableDemo() {
         resolve()
       })
   }
-
-
-  return (
-    <MaterialTable
+  if (isAdmin){
+     return (
+      <MaterialTable
       title="Registered Users"
       columns={columns}
       data={data}
       editable={{
-        onRowAdd: (newData) =>
-        new Promise((resolve) => {
-          handleRowAdd(newData, resolve)
-        }),
         onRowUpdate: (newData, oldData) =>
         new Promise((resolve) => {
             handleRowUpdate(newData, oldData, resolve);
@@ -149,7 +128,10 @@ function MaterialTableDemo() {
         }),
       }}
     />
-  );
+    );
+  }else{
+    return <></>;
+  }
 }
 
 export default MaterialTableDemo;

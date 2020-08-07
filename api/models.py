@@ -99,6 +99,12 @@ class User(db.Model, Serializer):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def check_is_admin(self, is_admin):
+        if (self.is_admin):
+            return 'admin'
+        else:
+            return 'user'
+
     @classmethod
     def get_users(cls, records = 30):
         records = cls.query.filter(cls.is_banned != True).order_by(cls.id.desc()).limit(records)
@@ -113,8 +119,13 @@ class User(db.Model, Serializer):
     @classmethod
     def verify_identity(cls, username, password):
         user = cls.query.filter(and_(cls.username == username)).first()
+        admin_rights = cls.query.filter(and_(cls.is_banned != True, cls.username == username, cls.is_admin == True)).first()
+        if admin_rights is not None:
+            is_admin = 'admin'
+        else:
+            is_admin = 'user'
         if user is not None and user.check_password(password):
-            return user, create_access_token(identity = username)
+            return user, create_access_token(identity = [username, is_admin])
         else:
             return None, None
 
@@ -139,6 +150,7 @@ class User(db.Model, Serializer):
             else:
                 _user.is_admin = 0
             db.session.commit()
+
 
     @classmethod
     def delete_user_records(cls, id):

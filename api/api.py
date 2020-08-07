@@ -114,23 +114,48 @@ def get_past_content():
     results = Link().get_past_content(platform, search_string)
     return jsonify(results)
 
+
+
 @app.route('/api/userRecords', methods = ['GET'])
 def get_user_records():
     results = User().get_users()
-    return jsonify(results)
+    if results is not None:
+        return jsonify(results = results)
+    else:
+        return bad_request('There was an error in the retrieval of database records! Please try again.')
+
+
 
 @app.route('/api/userRecordsUpdate', methods = ['POST'])
+@jwt_required
 def update_user_records():
     new_records = request.get_json()
-    User.update_user_records(id = new_records['id'], email = new_records['email'], is_admin = new_records['is_admin'])
-    return jsonify(message = "Success!")
+    user_to_update = User.update_user_records(id = new_records['id'], email = new_records['email'], is_admin = new_records['is_admin'])
+
+    user_privilege = get_jwt_identity()['is_admin']
+    if user_to_update is not None and user_privilege == 'admin':
+        response = jsonify(message = "Success!")
+        response.status_code = 201
+        return response
+    elif user_privilege != 'admin':
+        return bad_request('Insufficient privileges!')
+    else:
+        return bad_request('Invalid user to target!')
 
 @app.route('/api/userRecordsDelete', methods = ['POST'])
+@jwt_required
 def delete_user_records():
-    print(request.get_json())
     user_records = request.get_json()
-    User.delete_user_records(id = user_records['id'])
-    return jsonify(message = "Success!")
+    if get_jwt_identity()['is_admin'] == 'admin':
+        user_to_delete = User.delete_user_records(id = user_records['id'])
+        if get_user(id = user_records['id']) is None:
+           response = jsonify(message = "Success!")
+           response.status_code = 201
+           return response
+        else: 
+            return bad_request('Invalid user!')
+    else:
+        return bad_request('Insufficient privileges')
 
 @app.route('/api/register', methods = ['POST'])
 def create_user():

@@ -108,12 +108,12 @@ class User(db.Model, Serializer):
     def get_users(cls, records = 30):
         records = cls.query.filter(cls.is_banned != True).order_by(cls.id.desc()).limit(records)
         return User.serialize_list(records)
+        
 #
-    #@classmethod
-    def add_user(username, email, password):
-        _user = User(username = username, email = email, password_hash = generate_password_hash(password))
-        db.session.add(_user)
-        db.session.commit()
+    @classmethod
+    def get_user(cls, id):
+        records = cls.query.filter(and_(cls.is_banned != True, cls.id == id)).first()
+        return User.serialize_list(records)
     
     @classmethod
     def verify_identity(cls, username, password):
@@ -149,6 +149,7 @@ class User(db.Model, Serializer):
             else:
                 _user.is_admin = False
             db.session.commit()
+            return _user
 
 
     @classmethod

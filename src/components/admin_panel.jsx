@@ -47,10 +47,10 @@ function AdminPanel() {
     }
     api.get("/userRecords")
         .then(res => {               
-            setData(res.data)
+            setData(res.data.results)
          })
          .catch(error=>{
-             console.log("Error")
+             console.log("Error: ", error.message)
          })
   }, [])
 
@@ -81,7 +81,7 @@ function AdminPanel() {
         resolve()
         
       })
-    }else{
+    } else {
       setErrorMessages(errorList)
       setIserror(true)
       resolve()
@@ -141,5 +141,4 @@ function AdminPanel() {
     return <></>;
   }
 }
-
 export default AdminPanel;

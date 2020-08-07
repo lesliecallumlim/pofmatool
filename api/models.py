@@ -99,7 +99,7 @@ class User(db.Model, Serializer):
         return check_password_hash(self.password_hash, password)
 
     def check_is_admin(self, is_admin):
-        if (self.is_admin):
+        if self.is_admin:
             return 'admin'
         else:
             return 'user'

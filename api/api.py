@@ -35,7 +35,7 @@ def evaluate_link():
     results['fraud_probab'] = ''
     results['id'] = ''
 
-    current_user = get_jwt_identity()
+    current_user = get_jwt_identity()['username']
 
     if 'platform' in results: # Check if the key is created by the scraper function
       # Sentiment analysis
@@ -77,7 +77,7 @@ def get_trending():
 def ban_user():
     current_user = get_jwt_identity()
     data = request.get_json()
-    user_to_ban = User().modify_user(username = current_user, target_user = data['targetUser'], modify_type = data['modifyType'])
+    user_to_ban = User().modify_user(username = current_user['username'], target_user = data['targetUser'], modify_type = data['modifyType'])
     if user_to_ban is None:
         return bad_request('Invalid user!')
     ban_unban = 'banned' if user_to_ban.is_banned is True else 'unbanned'
@@ -95,7 +95,7 @@ def give_feedback():
     elif data['feedback_string'] not in allowed_feedbacks:
         return bad_request('Invalid feedback!')
     else:
-        feedback = Link().add_feedback(username = current_user, feedback_string = data['feedback_string'], id = data['id'])
+        feedback = Link().add_feedback(username = current_user['username'], feedback_string = data['feedback_string'], id = data['id'])
         if feedback is None:
             return bad_request('Invalid link / unauthorised - please login to give your feedback!')
         else:
@@ -168,5 +168,5 @@ def login():
 def view_past_records():
     current_user = get_jwt_identity()
     startPage = int(request.args.get('start'))
-    past_submissions = Link.get_user_past_records(username = current_user, start = startPage)
-    return jsonify(logged_in_as = current_user, past_submissions = past_submissions, page = startPage)
+    past_submissions = Link.get_user_past_records(username = current_user['username'], start = startPage)
+    return jsonify(logged_in_as = current_user['username'], past_submissions = past_submissions, page = startPage)

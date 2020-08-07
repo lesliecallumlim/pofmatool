@@ -56,7 +56,6 @@ class Link(db.Model, Serializer):
         real_news = func.sum(case([(cls.fraud == 'Real', 1)], else_= 0)).label('real_news')
         fake_news = func.sum(case([(cls.fraud == 'Fake', 1)], else_= 0)).label('fake_news')
         summary = cls.query.with_entities(cls.platform, real_news, fake_news).group_by(cls.platform).filter(cls.f_deleted != True).all()
-        print(summary)
         return summary
 
     @classmethod
@@ -125,7 +124,7 @@ class User(db.Model, Serializer):
         else:
             is_admin = 'user'
         if user is not None and user.check_password(password):
-            return user, create_access_token(identity = [username, is_admin])
+            return user, create_access_token(identity = { 'username' : user.username, 'is_admin' : is_admin })
         else:
             return None, None
 
@@ -146,15 +145,14 @@ class User(db.Model, Serializer):
             _user = cls.query.filter(cls.id == id).first()
             _user.email = email
             if (is_admin == 'true'):
-                _user.is_admin = 1
+                _user.is_admin = True
             else:
-                _user.is_admin = 0
+                _user.is_admin = False
             db.session.commit()
 
 
     @classmethod
     def delete_user_records(cls, id):
-        #if cls.query.filter(cls.id == id) is not None:
         _user = cls.query.filter(cls.id == id).first()  
         db.session.delete(_user)
         db.session.commit()

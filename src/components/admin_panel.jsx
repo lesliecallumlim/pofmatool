@@ -40,7 +40,7 @@ function MaterialTableDemo() {
     const token = localStorage.getItem('token');
     if (token){
       var userDetails = parseJwt(token)
-      var user_role = userDetails.identity[1]
+      var user_role = userDetails.identity['is_admin']
       if (user_role == 'admin'){
         setRole(true)
       }
@@ -112,22 +112,30 @@ function MaterialTableDemo() {
   }
   if (isAdmin){
      return (
-      <MaterialTable
-      title="Registered Users"
-      columns={columns}
-      data={data}
-      editable={{
-        onRowUpdate: (newData, oldData) =>
-        new Promise((resolve) => {
-            handleRowUpdate(newData, oldData, resolve);
-            
-        }),
-        onRowDelete: (oldData) =>
-        new Promise((resolve) => {
-          handleRowDelete(oldData, resolve)
-        }),
-      }}
-    />
+       <div>
+       <hr className="m-0"></hr>
+       <section className="site-section p-3 p-lg-5 d-flex align-items-left" id="admin_panel">
+         <div className="w-100">
+           <h2 className="mb-5">Admin Panel</h2>
+        <MaterialTable
+        title="Registered Users"
+        columns={columns}
+        data={data}
+        editable={{
+          onRowUpdate: (newData, oldData) =>
+          new Promise((resolve) => {
+              handleRowUpdate(newData, oldData, resolve);
+              
+          }),
+          onRowDelete: (oldData) =>
+          new Promise((resolve) => {
+            handleRowDelete(oldData, resolve)
+          }),
+        }}
+      />
+      </div>
+      </section>
+      </div>
     );
   }else{
     return <></>;

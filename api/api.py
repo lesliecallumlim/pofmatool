@@ -154,8 +154,6 @@ def login():
 
     user, token = User.verify_identity(username = data['username'],password = data['password'])
 
-    print(token)
-
     if user and token is not None:
         response = jsonify(message = f'Welcome {user.username}', token = token)
         response.status_code = 201

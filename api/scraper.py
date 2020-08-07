@@ -24,6 +24,7 @@ def scraper(url):
     instagram = 'instagram\.com'
     linkedin = 'linkedin\.com'
     contents = {}
+    contents["is_valid"] = False
     #We only want to capture the URLs from the four platforms
     regex_pattern = fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{facebook}|{instagram}|{twitter}|{linkedin})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$'
     if re.search(regex_pattern, url):
@@ -34,7 +35,6 @@ def scraper(url):
         options.add_argument('--disable-dev-shm-usage')
         driver = webdriver.Chrome(options = options)
         driver.get(url)
-        contents["is_valid"] = False
         try: 
             if re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{facebook})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
                 elements = driver.find_element_by_xpath('//div[@data-testid="post_message"]').text

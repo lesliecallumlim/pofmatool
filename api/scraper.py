@@ -34,6 +34,7 @@ def scraper(url):
         options.add_argument('--disable-dev-shm-usage')
         driver = webdriver.Chrome(options = options)
         driver.get(url)
+        contents["is_valid"] = False
         try: 
             if re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{facebook})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
                 elements = driver.find_element_by_xpath('//div[@data-testid="post_message"]').text
@@ -53,11 +54,9 @@ def scraper(url):
                 platform = 'LinkedIn'
             contents["text"] = clean_text(elements)
             contents["platform"] = platform
-            contents["is_valid"] = True      
+            contents["is_valid"] = True if contents["text"] else False      
         except Exception as e: 
             contents["text"] = 'Invalid platform link!'
-            contents["is_valid"] = False
-            print(e)
         # End chromedriver session
         finally:
             driver.quit()

@@ -91,8 +91,8 @@ def evaluate_link():
         # Pull sentiment results using the model
         results['sentiment_result'] = sentiment.classify(dict([token, True] for token in _text))
         _fraud_result = log_model.predict([results['text']])
-        # This is a binary classification model, but there is a predict_proba function which permits us to 
-        # get the numerical probability of the fake or real news
+        # This is a binary classification model, but there is a predict_proba function through scikit 
+        # learn which permits us to get get the numerical probability of the fake or real news
         results['fraud_probab'] = max(log_model.predict_proba([results['text']])[0])
         results['fraud_result'] = 'Fake' if _fraud_result[0] == 'fake' else 'Real'
         # We then use these results of the scraper and commit it into the DB 

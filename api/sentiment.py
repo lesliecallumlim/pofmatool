@@ -4,6 +4,9 @@ from nltk.tag import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
 
+# This module basically takes the text input 
+# and cleans it by eliminating stopwords using NLTK, 
+# and tokenizes the text, and returns the text.
 def remove_noise(tweet_tokens, stop_words = ()):
     cleaned_tokens = []
 

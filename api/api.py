@@ -65,12 +65,17 @@ def evaluate_link():
             results = scraper(url)
     except: #If the search parameter is not found, we throw an error
         return bad_request('Please check your parameters!')
+    
+    if results["is_valid"] is not True:
+        return bad_request(results["text"])
 
      # JWT based user details, we simply assign a default if user is not logged in
      # for this endpoint.
     current_user = get_username_jwt() if get_username_jwt() else 'Guest'
 
-    if 'platform' in results: # Check if the key is created by the scraper function
+
+    if 'platform' in results and results["is_valid"]: 
+        # Check if the key is created by the scraper function
       # Only load models from disks if it not loaded to keep our overheads minimal.
       # The search in the locals and globals function ensure that the models are
       # only initialised once in the entire session

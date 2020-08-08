@@ -184,9 +184,9 @@ class UserPanel extends Component {
         return(<><a href = "#logout" className = "nav-link nav-link-active" onClick = {this.logOut.bind(this)}>Logout</a></>) 
     }
     else { 
-        return(<div class="dropdown">
-                <button class="dropbtn">User Panel</button>
-                    <div class="dropdown-content">
+        return(<div className ="dropdown">
+                <button  className ="dropbtn">User Panel</button>
+                    <div  className ="dropdown-content">
                         {register_link}{login_link}  
                     </div>
                 </div>); 

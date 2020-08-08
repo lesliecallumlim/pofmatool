@@ -124,13 +124,13 @@ li {
 .dropdown:hover .dropbtn {background-color: #FB9039;}
 
 .close {
-  cursor: pointer;
-  position: absolute;
-  display: block ;
-  padding: 1px 6px;
-  line-height: 20px;
-  right: 2px;
-  top: -0px;
+  cursor: pointer !important;;
+  position: absolute !important;;
+  display: block !important;;
+  padding: 1px 6px !important;;
+  line-height: 20px !important;;
+  right: 2px !important;;
+  top: -0px !important;;
   font-size: 1rem !important;
   /* background-color: #1F3044 !important; */
   color: #1F3044 !important;
@@ -233,7 +233,7 @@ button:active {
     margin: auto auto 0;
   }
   #sideNav .navbar-brand .img-profile {
-    max-height: 8vh;
+    max-height: 100px;
   }
   #sideNav .navbar-collapse {
     display: -webkit-box;

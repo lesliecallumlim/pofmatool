@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from api.config import Config 
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -21,4 +21,16 @@ limiter = Limiter(
     key_func=get_remote_address,
     default_limits=["200 per day", "50 per hour"]
 )
+
+#
+@jwt.expired_token_loader
+def my_expired_token_callback(expired_token):
+    token_type = expired_token['type']
+    return jsonify({
+        'status': 401,
+        'sub_status': 42,
+        'message': 'The {} token has expired'.format(token_type)
+    }), 401
+
+
 from api import api, models 

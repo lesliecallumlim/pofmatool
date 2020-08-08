@@ -1,11 +1,15 @@
-import chromedriver_binary
+import chromedriver_binary # webdriver for scraper
 import re
 import time
-from selenium import webdriver
-import nltk
-from nltk.corpus import stopwords
+from selenium import webdriver # scraper
+# text pre-processing
+import nltk 
+from nltk.corpus import stopwords 
 
 def clean_text(text):
+    # This module basically takes the text input 
+    # and cleans it by eliminating stopwords using NLTK and bad characters 
+    # through regex, and outputs them in lowercase format.
     REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]\|@,;]')
     BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
     # nltk.download('stopwords')
@@ -17,7 +21,11 @@ def clean_text(text):
     text = ' '.join(word for word in text.split() if word not in STOPWORDS) # remove stopwors from text
     return text
 
+
 def scraper(url):
+    # This module scrapes the URL of those platforms that are approved, otherwise it would not scraped. 
+    # There are few exception cases that are handled if the platform link is invalid as well, 
+    # or that the web scraper failed to scrape any text. Returns a dictionary of inputs fields.
     #Regex for URLs
     facebook = 'facebook\.com|fb(?:\.me|\.com)' 
     twitter = 'twitter\.com'

@@ -26,8 +26,8 @@ def remove_noise(tweet_tokens, stop_words = ()):
             cleaned_tokens.append(token.lower())
     return cleaned_tokens
 
+# This is an auxiliary module which loads the saved ML from disk.
 def load_models(): 
-    #TODO: Repipe - this is due to the different project structure that is ran
     try:
         sentiment = load('./api/models/sentiment.joblib')
         prediction = load('./api/models/log_model.joblib')

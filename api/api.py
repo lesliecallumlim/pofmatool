@@ -8,7 +8,6 @@ from api.sentiment import remove_noise, load_models
 from nltk.tokenize import word_tokenize
 from flask_jwt_extended import (jwt_required, jwt_optional, get_jwt_identity)
 
-
 # Obviously we don't limit ourselves when in testing
 @limiter.request_filter
 def ip_whitelist():
@@ -47,10 +46,11 @@ def get_results():
 # system given the huge overheads since the module performs a significant number of operations.
 
 # This endpoint is also essentially the bedrock of the system itself where the two ML algorithms
-# are loaded from disk, and applied after having the text content of the link scraped, and subsequent
+# are loaded from disk, and applied after having the text content of the link scraped, and subsequently
 # performs the CRUD operations. 
 
-# The parameters required are: the search url.
+# The parameters required are: the search url, and an optional JWT token 
+# which permits us to store the user who submitted in our database.
 @app.route('/api/evaluate', methods = ['POST'])
 @limiter.limit("1 per minute")
 @jwt_optional 

@@ -40,12 +40,11 @@ class SearchRecords extends Component {
         const _search_string = this.state.searchString;
         axios.get('/api/searchRecords', {params: {platform: _platform, search_string: _search_string}})
             .then(function(response) {
-                const _results = response.data;
+                const _results = response.data.results;
                 currentComponent.setState({loading: false})
                 currentComponent.setState({results: _results})
             })
             .catch(function(error){
-                console.log(error.response.data)
                 currentComponent.setState({loading: false})
                 currentComponent.setState({results: error.response.data})
             });
@@ -117,12 +116,18 @@ class SearchRecords extends Component {
                            value={this.state.search} 
                     />
                     <select className = "form-control" style = {{"maxWidth" : "20%"}} id="dropDown" onClick = {this.onPlatformSelect}>
-                        <option className="dropdown-item" value="All">All</option>
-                        <option className="dropdown-item" value="Facebook">Facebook</option>
-                        <option className="dropdown-item" value="Twitter">Twitter</option>
-                        <option className="dropdown-item" value="Instagram">Instagram</option>
-                        <option className="dropdown-item" value="LinkedIn">LinkedIn</option>
-                        <option className="dropdown-item" value="User">User</option>
+                        <option className="dropdown-item" value="All" 
+                           onChange={(e) => this.inputChangeHandler.call(this, e)} >All</option>
+                        <option className="dropdown-item" value="Facebook"
+                           onChange={(e) => this.inputChangeHandler.call(this, e)} >Facebook</option>
+                        <option className="dropdown-item" value="Twitter"
+                           onChange={(e) => this.inputChangeHandler.call(this, e)} >Twitter</option>
+                        <option className="dropdown-item" value="Instagram"
+                           onChange={(e) => this.inputChangeHandler.call(this, e)} >Instagram</option>
+                        <option className="dropdown-item" value="LinkedIn"
+                           onChange={(e) => this.inputChangeHandler.call(this, e)} >LinkedIn</option>
+                        <option className="dropdown-item" value="User"
+                           onChange={(e) => this.inputChangeHandler.call(this, e)} >User</option>
                     </select>
                 <div>
                     <Popup modal

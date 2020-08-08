@@ -23,7 +23,8 @@ def scraper(url):
     twitter = 'twitter\.com'
     instagram = 'instagram\.com'
     linkedin = 'linkedin\.com'
-    contents = {}
+    contents = {}   
+    contents["is_valid"] = False
     #We only want to capture the URLs from the four platforms
     regex_pattern = fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{facebook}|{instagram}|{twitter}|{linkedin})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$'
     if re.search(regex_pattern, url):
@@ -39,18 +40,21 @@ def scraper(url):
                 elements = driver.find_element_by_xpath('//div[@data-testid="post_message"]').text
                 platform = 'Facebook'
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{instagram})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
-                elements = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/div[2]/div[1]/ul/div/li/div/div/div[2]/span').text
+                time.sleep(4)       
+                elements = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/div[3]/div[1]/ul/div/li/div/div/div[2]/span').text
+                print(elements)
                 platform = 'Instagram'
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{twitter})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
                 time.sleep(4) #To ensure that all elements are captured proper
-                elements = driver.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/div/div/section/div/div/div/div[1]/div/div/article/div/div/div/div[3]/div[1]/div/span').text
+                elements = driver.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div/div/section/div/div/div[1]/div/div/article/div/div/div/div[3]/div[1]/div/span').text
                 platform = 'Twitter'
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{linkedin})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
                 time.sleep(4)
                 elements = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/p').text
                 platform = 'LinkedIn'
             contents["text"] = clean_text(elements)
-            contents["platform"] = platform      
+            contents["platform"] = platform
+            contents["is_valid"] = True if contents["text"] else False      
         except Exception as e: 
             contents["text"] = 'Invalid platform link!'
         # End chromedriver session

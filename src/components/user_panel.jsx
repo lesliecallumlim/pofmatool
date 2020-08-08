@@ -164,7 +164,7 @@ class UserPanel extends Component {
     var register_link = 
         <Popup modal 
                 contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center" } }
-                trigger= {< a href = "#register" className = "nav-link nav-link-active">Register</a> } >
+                trigger= {< a href = "#register" className = "nav-link ">Register</a> } >
                 {modal => ( 
                 <>{ registration } <a href className="close" onClick={modal}>x</a></>
                 )}
@@ -173,7 +173,7 @@ class UserPanel extends Component {
     var login_link = 
         <Popup modal 
                 contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center" } }
-                trigger= {< a href = "#login" className = "nav-link nav-link-active">Login</a> } >
+                trigger= {< a href = "#login" className = "nav-link ">Login</a> } >
                 {modal => ( 
                 <>{ login } <a href className="close" onClick={modal}>x</a></>
                 )}
@@ -184,7 +184,12 @@ class UserPanel extends Component {
         return(<><a href = "#logout" className = "nav-link nav-link-active" onClick = {this.logOut.bind(this)}>Logout</a></>) 
     }
     else { 
-        return(<> {register_link}{login_link} </>); 
+        return(<div className ="dropdown">
+                <button  className ="dropbtn">User Panel</button>
+                    <div  className ="dropdown-content">
+                        {register_link}{login_link}  
+                    </div>
+                </div>); 
     }
  }
 }

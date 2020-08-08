@@ -5,13 +5,16 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-
+import logging
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 jwt = JWTManager(app)
+
+# Logfile to keep track of the various exceptions raised
+logging.basicConfig(filename='error.log',level=logging.INFO)
 
 limiter = Limiter(
     app,

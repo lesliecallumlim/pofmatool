@@ -16,7 +16,7 @@ class Trending extends Component {
     this.setState({isLoading : true});
     try {
       const result = await axios.get('/api/trending');
-      this.setState({ trending_data : result.data, isLoading: false});
+      this.setState({ trending_data : result.data.results, isLoading: false});
     }
     catch (error) {
       this.setState({ error, isLoading: false});

@@ -41,11 +41,14 @@ class Records extends Component {
     try {
       if (token !== null) {
         const config = {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${token}` },
             params: {start: this.state.startPageForUserSubmitted},
         }
         var user_result = await axios.get('/api/submitted', config);
-        this.setState({ user_data : user_result.data.past_submissions, isLoading: false, startPageForUserSubmitted: this.state.startPageForUserSubmitted});
+        this.setState({ user_data : user_result.data.past_submissions, 
+                        isLoading: false,
+                        startPageForUserSubmitted: this.state.startPageForUserSubmitted
+        });
         this.setState({ hasValidToken : true})
         if (this.state.user_data === undefined || this.state.user_data.length === 0) {
           this.setState({lastPageForUserSubmitted : true});
@@ -157,10 +160,8 @@ class Records extends Component {
           <table className = 'table-hover table history' >
               <tbody>
               <tr>
-                {/* Maybe make this dynamic? */}
                 <th>Platform</th>
                 <th>URL</th>
-                {/* <th>Text</th> */}
                 <th>User</th>
                 <th>Sentiments</th>
                 <th>Falsehood</th>

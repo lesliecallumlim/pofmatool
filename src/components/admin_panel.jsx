@@ -36,8 +36,9 @@ function AdminPanel() {
   const [iserror, setIserror] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
+  const token = localStorage.getItem('token');
+
   useEffect(() => { 
-    const token = localStorage.getItem('token');
     if (token){
       var userDetails = parseJwt(token)
       var user_role = userDetails.identity['is_admin']
@@ -45,9 +46,14 @@ function AdminPanel() {
         setRole(true)
       }
     }
-    api.get("/userRecords")
+    api.get("/userRecords", {
+            headers: {
+              'Content-Type': 'application/json',            
+              'Authorization': `Bearer ${token}`
+            }
+        })
         .then(res => {               
-            setData(res.data.results)
+            setData(res.data.results);
          })
          .catch(error=>{
              console.log("Error: ", error.message)
@@ -63,7 +69,9 @@ function AdminPanel() {
     if(errorList.length < 1){
       api.post("/userRecordsUpdate", newData, {
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json',            
+            'Authorization': `Bearer ${token}`
+
         }
     })
       .then(res => {
@@ -94,6 +102,7 @@ function AdminPanel() {
     api.post("/userRecordsDelete", {id : oldData.id}, {
       headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
       }
     })
       .then(res => {
@@ -129,7 +138,9 @@ function AdminPanel() {
           }),
           onRowDelete: (oldData) =>
           new Promise((resolve) => {
-            handleRowDelete(oldData, resolve)
+            handleRowDelete(oldData, resolve)            
+            window.location.reload(false)
+
           }),
         }}
       />

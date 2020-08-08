@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 from flask import jsonify 
 from datetime import date 
+import re
 
 class Serializer(object):
     def serialize(self):
@@ -18,7 +19,7 @@ class Serializer(object):
 
 class Link(db.Model, Serializer):
     id = db.Column(db.Integer, primary_key = True)
-    url = db.Column(db.String(128)) #TODO: Add unique links, prevent duplicates, unique = True) # Links gotta be unique man
+    url = db.Column(db.String(128)) 
     platform = db.Column(db.String(20))
     text = db.Column(db.String(200))
     sentiment = db.Column(db.String(50))
@@ -31,7 +32,6 @@ class Link(db.Model, Serializer):
 
     @classmethod
     def get_past_records(cls, start = 1, records = 5): 
-        # records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).limit(records)
         records = cls.query.filter(cls.f_deleted != True).order_by(cls.date_added.desc()).paginate(start, records, False).items
         return Link.serialize_list(records)
 
@@ -103,13 +103,21 @@ class User(db.Model, Serializer):
             return 'admin'
         else:
             return 'user'
+    @staticmethod
+    def check_email(email):
+        regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        return re.search(regex, email)
 
     @classmethod
     def get_users(cls, records = 30):
         records = cls.query.filter(cls.is_banned != True).order_by(cls.id.desc()).limit(records)
         return User.serialize_list(records)
-        
-#
+
+    def add_user(username, email, password):
+        _user = User(username = username, email = email, password_hash = generate_password_hash(password))
+        db.session.add(_user)
+        db.session.commit()
+
     @classmethod
     def get_user(cls, id):
         records = cls.query.filter(and_(cls.is_banned != True, cls.id == id)).first()

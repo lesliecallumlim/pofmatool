@@ -39,9 +39,7 @@ class Search extends Component {
         e.preventDefault();
         const token = localStorage.getItem('token');
         var auth;
-        //Since /api/evaluate endpoint requires a JWT Header
-        //Have a condition to set JWT header with '${auth}. "" -> Guest.
-        if(token == null){ auth = ""; }
+        if (token == null) { auth = ""; }
         else { 
             auth = `Bearer ${token}`
             currentComponent.setState({token: token}) 
@@ -52,9 +50,8 @@ class Search extends Component {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
                 Authorization: `${auth}`
-                //Authorization: `Bearer ${token}` 
             },
-            data: {},
+            // data: {},
         };
 
         const formFields = this.state;
@@ -70,12 +67,10 @@ class Search extends Component {
                 currentComponent.setState({fraudProbability: Math.round(_results.fraud_probability * 100)})
             })
             .catch(function(error){
-                console.log(error.response.data)
                 currentComponent.setState({loading: false})
-                currentComponent.setState({results: error.response.data.error})
+                currentComponent.setState({results: error.response.data.message})
             });
     }
-
 
     async addFeedback(e) {
         var auth;
@@ -92,10 +87,9 @@ class Search extends Component {
                 Authorization: `Bearer ${this.state.token}` 
         }};
         const params = {"feedback_string": e.target.value, "id": searchID};
-        console.log(params);
         axios.post('/api/provideFeedback', params, config)
             .then(function(response) {
-                const _results = response.data;
+                // const _results = response.data;
                 currentComponent.setState({feedback_data: response.data.message});
             })
             .catch(function(error) {
@@ -105,25 +99,12 @@ class Search extends Component {
 
     render() {
         let content;
-        if (!this.state.results == "") {
-            // const sentimentList =  this.state.sentiments;
+        if (this.state.results !== "") {
             // Let's show certain elements only when used  
-            var sentiment_color;
-            if (this.state.sentiment == 'Positive') {
-                sentiment_color = 'success'
-            } 
-            else {
-                sentiment_color = 'danger'
-            }
+            const sentiment_colors = { 'Positive' : 'success', 'Negative' : 'danger' };
+            const fraud_colors = { 'Real' : 'success', 'Fake' : 'danger' };
 
-            var fraud_color;
-            if (this.state.fraud === 'Real') {
-                fraud_color = 'success'
-            } 
-            else {
-                fraud_color = 'danger'
-            }
-            if (!this.state.sentiment == '') {
+            if (this.state.sentiment !== '') {
             content = 
             <div>
                 <hr></hr>
@@ -134,9 +115,9 @@ class Search extends Component {
                     <h4>Keywords: </h4>
                     <p>{this.state.results}</p>
                     <h4>Falsehood:</h4>
-                    <span style={{textTransform: 'capitalize'}} className ={"badge p-2 mr-1 mb-3 badge-" + fraud_color}>{this.state.fraud} - {this.state.fraudProbability}%</span>
+                    <span style={{textTransform: 'capitalize'}} className ={"badge p-2 mr-1 mb-3 badge-" + fraud_colors[this.state.fraud]}>{this.state.fraud} - {this.state.fraudProbability}%</span>
                     <h4>Sentiments: </h4>  
-                    <span className ={"badge p-2 mr-1 mb-3 badge-" + sentiment_color}>{this.state.sentiment }</span>
+                    <span className ={"badge p-2 mr-1 mb-3 badge-" + sentiment_colors[this.state.sentiment]}>{ this.state.sentiment }</span>
                     <h4>What do you think?</h4>
 
                     <Popup modal
@@ -183,7 +164,7 @@ class Search extends Component {
             <div>
                 <hr className = "mb-3"></hr>
                 <h3 className="mb-2">Your result </h3> 
-                <hr style = {{ "margin-top": "-0.1em"}}></hr>
+                <hr style = {{ "marginTop": "-0.1em"}}></hr>
                 <Spinner animation="grow" variant="dark">
                 <span className="sr-only">Loading...</span>
                 </Spinner>
@@ -199,14 +180,8 @@ class Search extends Component {
                     <Popup modal
                        contentStyle = {{ "maxWidth": "500px", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "textAlign": "center" } }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
-                        {close => ( 
-                            <>{ content } <a 
-                                            className="close" 
-                                            onClick={(e) => {
-                                                close()
-                                                window.location.reload(false)
-                                            }}>x
-                                            </a></>
+                       {close => ( 
+                           <>{ content } <a className="close" onClick={(e) => { close(); window.location.reload(false) }}>x</a></>
                         )}
                     </Popup> 
                 </div> 

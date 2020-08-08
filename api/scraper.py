@@ -41,6 +41,7 @@ def scraper(url):
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{instagram})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
                 time.sleep(4)       
                 elements = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/div[3]/div[1]/ul/div/li/div/div/div[2]/span').text
+                print(elements)
                 platform = 'Instagram'
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{twitter})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
                 time.sleep(4) #To ensure that all elements are captured proper
@@ -56,6 +57,7 @@ def scraper(url):
         except Exception as e: 
             contents["text"] = 'Invalid platform link!'
             contents["is_valid"] = False
+            print(e)
         # End chromedriver session
         finally:
             driver.quit()

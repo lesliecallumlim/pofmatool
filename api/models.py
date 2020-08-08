@@ -146,6 +146,12 @@ class User(db.Model, Serializer):
         regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         return re.search(regex, email)
 
+    #@classmethod
+    def add_user(username, email, password):
+        _user = User(username = username, email = email, password_hash = generate_password_hash(password))
+        db.session.add(_user)
+        db.session.commit()
+
     @classmethod
     def get_users(cls, records = 30):
         # This module returns the number of records. The default number of users would be 30. 

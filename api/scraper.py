@@ -23,7 +23,7 @@ def scraper(url):
     twitter = 'twitter\.com'
     instagram = 'instagram\.com'
     linkedin = 'linkedin\.com'
-    contents = {}
+    contents = {}   
     contents["is_valid"] = False
     #We only want to capture the URLs from the four platforms
     regex_pattern = fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{facebook}|{instagram}|{twitter}|{linkedin})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$'

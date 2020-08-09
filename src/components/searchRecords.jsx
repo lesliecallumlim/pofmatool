@@ -1,9 +1,17 @@
+/**
+ * Component to display the search bar to allow users to search for past 
+ * analysed records based on the platform.
+ */
+
 import React, { Component } from 'react';
+//Utilize spinner library as a loading visual while search function runs in the background
 import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import './../App.css';
+//Utilize reactjs-pop library for the pre-built popup visual
 import Popup from "reactjs-popup";
 
+//Initialize states with empty/null values
 class SearchRecords extends Component {
     constructor(props) {
         super(props);
@@ -18,28 +26,34 @@ class SearchRecords extends Component {
         }
     }
 
+    //Setting the search state to the value of the search button
+    //which then triggers the formhandler
     inputChangeHandler(e) {
         this.setState({searchString: e.target.value });
     }
 
+    //Setting the platform state to the value of the dropdown selected
     onPlatformSelect = (e) => {
         this.setState({platform: e.target.value})
     }
 
+    //Function to close the popup and re-render the component on the index.js screen
     onBtnClick(){	
         this.setState({modalClosed: true});	
         this.props.rerenderParentCallback();	
     }
 
-
+    //Function that calls the backend api to retrieve past analysed data based on selected platform
     formHandler(e) {
         let currentComponent = this;
         currentComponent.setState({loading: true});
-
+        //Setting JSON Payload parameter data
         const _platform = this.state.platform;
         const _search_string = this.state.searchString;
+        //Perform GET Request to api endpoint /api/searchRecords with JSON Payload data
         axios.get('/api/searchRecords', {params: {platform: _platform, search_string: _search_string}})
             .then(function(response) {
+                //Setting the state data and results data from the response received from the API
                 const _results = response.data.results;
                 currentComponent.setState({loading: false})
                 currentComponent.setState({results: _results})
@@ -49,7 +63,7 @@ class SearchRecords extends Component {
                 currentComponent.setState({results: error.response.data})
             });
     }
-
+    //Method to map state data into table fields for past search analyses based on selected platform
     renderTableData() {
         return this.state.results.map((all_data) => {
            const { date_added, fraud, id, platform, sentiment, fraud_probability, text, url, username_submitted} = all_data //destructuring
@@ -67,10 +81,11 @@ class SearchRecords extends Component {
            )
         })
       }
-    
+    //Render the search records component
     render() {
         let content;
         if (!this.state.results == "") {
+            //HTML codes for table header
             var all_records = 
             <>
             <hr></hr>
@@ -94,7 +109,7 @@ class SearchRecords extends Component {
             </div>
             </>;
         }
-        
+        //Spinner loading visual while API request is still loading
         if (this.state.loading) {
             content = 
             <div>
@@ -108,6 +123,7 @@ class SearchRecords extends Component {
         }
         
         return(
+            //More HTML Codes for dropdown selection and Popup Modal
             <div>
             <div className="input-group">
                     <input type="text" name="search" className="form-control" 
@@ -129,6 +145,7 @@ class SearchRecords extends Component {
                         <option className="dropdown-item" value="User"
                            onChange={(e) => this.inputChangeHandler.call(this, e)} >User</option>
                     </select>
+                    
                 <div>
                     <Popup modal
                        contentStyle = {{ "maxWidth": "70%", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "textAlign": "center" } }

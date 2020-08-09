@@ -1,16 +1,33 @@
+/**
+ * Admin panel component that adopts role-based authorization for only
+ * admins to view the panel.
+ * Panel allows admins to view registered users and edit/delete their records from the database.
+ */
+
 import React, { useState, useEffect } from 'react';
+//material-table library for the admin panel table 
 import MaterialTable from 'material-table';
 import axios from 'axios'
 
+//Defining API address
 const api = axios.create({
   baseURL: '/api'
 })
 
+/**
+ * To ensure that during updateRecords, the updated email passed as parameter
+ * conforms to the email validation regex.
+ */
 function validateEmail(email){
   const re = /^((?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))$/;
   return re.test(String(email).toLowerCase());
 }
 
+/**
+ * Parsing JWT Token to break it down into :
+ * 1. HEADER:ALGORITHM & TOKEN TYPE 2. PAYLOAD:DATA 3.VERIFY SIGNATURE
+ * Return the PAYLOAD:DATA into JSON format.
+ */
 function parseJwt(token) {
   if (!token) { return; }
   const base64Url = token.split('.')[1];
@@ -18,7 +35,14 @@ function parseJwt(token) {
   return JSON.parse(window.atob(base64));
 }
 
+/**
+ * Functional component for the AdminPanel
+ */
 function AdminPanel() {
+  /**
+   * Fields from the "user" table from the database
+   * to fill the admin panel table
+   */
   var columns = [
     { title: 'ID', field: 'id', editable: 'never' },
     { title: 'Username', field: 'username', editable: 'never' },
@@ -29,16 +53,28 @@ function AdminPanel() {
                 true: 'true'}
     }
   ]
+
+  /**
+   * Since functional componenets are stateless,
+   * state hooks allow states to be used.
+   */
   const [data, setData] = useState([]);
   const [isAdmin, setRole] = useState(false)
-
-  //for error handling
   const [iserror, setIserror] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
+  //Get token from user's local storage.
   const token = localStorage.getItem('token');
 
+  /**
+   * Using effect hooks inside the functional component
+   * to determine what happens after component is being rendered.
+   */
   useEffect(() => { 
+    /**
+     * Check if user is logged-in
+     * Check if logged-in user has admin role
+     */
     if (token){
       var userDetails = parseJwt(token)
       var user_role = userDetails.identity['is_admin']
@@ -46,6 +82,10 @@ function AdminPanel() {
         setRole(true)
       }
     }
+    /**
+     * Perform a GET request to /api/userRecords API endpoint
+     * with JWT token as header.
+     */
     api.get("/userRecords", {
             headers: {
               'Content-Type': 'application/json',            
@@ -60,6 +100,11 @@ function AdminPanel() {
          })
   }, [])
 
+  /**
+   * Function that allows admin to update users' records
+   * Function receives the new and old data and call the API endpoing /api/userRecordsUpdate
+   * with the JWT token
+   */
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
     let errorList = []
@@ -74,6 +119,10 @@ function AdminPanel() {
 
         }
     })
+    /**
+     * The response from the API saves the update into the database,
+     * and the newdata replaces the old data in the admin panel table
+     */
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -97,6 +146,11 @@ function AdminPanel() {
     }    
   }
   
+  /**
+   * Function that allows admin to delete users' records
+   * Function receives the new and old data and call the API endpoing /api/userRecordsDelete
+   * with the JWT token
+   */
   const handleRowDelete = (oldData, resolve) => {
     
     api.post("/userRecordsDelete", {id : oldData.id}, {
@@ -105,6 +159,10 @@ function AdminPanel() {
           'Authorization': `Bearer ${token}`
       }
     })
+     /**
+     * The response from the API saves the deletion into the database,
+     * and the newdata replaces the old data in the admin panel table
+     */
       .then(res => {
         const dataDelete = [...data];
         const index = oldData.tableData.id;
@@ -119,6 +177,9 @@ function AdminPanel() {
         resolve()
       })
   }
+  /**
+   * Return the component only if JWT identification is an admin.
+   */
   if (isAdmin){
      return (
        <div>

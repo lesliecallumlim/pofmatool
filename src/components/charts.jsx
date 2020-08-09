@@ -1,9 +1,15 @@
+/**
+ * Component to display statistics in Charts on the results of each platform.
+ */
+
 import React, {Component} from 'react';
+//Import charts library 
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import axios from 'axios';
 
 class ResultChart extends Component {
+  //Initialize states with empty/null values
   constructor(props) {
     super(props);
     this.state = {
@@ -13,6 +19,10 @@ class ResultChart extends Component {
     };
   }
  
+  /**
+   * When component is mounted, perform a get request by calling the API endpoing /api/results 
+   * Set data state with the response data.
+   */
   async componentDidMount() {
     this.setState({isLoading : true});
     try {
@@ -24,6 +34,9 @@ class ResultChart extends Component {
     }
   }
 
+  /**
+   * Render the component for the charts with corresponding data received from /api/results
+   */
   render() {
     const { data, isLoading, error } = this.state;
 
@@ -62,9 +75,6 @@ class ResultChart extends Component {
           stacking: 'percent'
         }
       },
-          
-        
-
       tooltip: {  pointFormat: '({point.percentage:.0f}%)'
       } 
     }

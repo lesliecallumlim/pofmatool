@@ -4,6 +4,9 @@ from nltk.tag import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
 
+# This module basically takes the text input 
+# and cleans it by eliminating stopwords using NLTK, 
+# and tokenizes the text, and returns the text.
 def remove_noise(tweet_tokens, stop_words = ()):
     cleaned_tokens = []
 
@@ -26,8 +29,8 @@ def remove_noise(tweet_tokens, stop_words = ()):
             cleaned_tokens.append(token.lower())
     return cleaned_tokens
 
+# This is an auxiliary module which loads the saved ML from disk.
 def load_models(): 
-    #TODO: Repipe - this is due to the different project structure that is ran
     try:
         sentiment = load('./api/models/sentiment.joblib')
         prediction = load('./api/models/log_model.joblib')

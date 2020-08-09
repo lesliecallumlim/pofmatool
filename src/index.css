@@ -99,8 +99,8 @@ li {
 }
 
 .dropdown {
-  position: relative;
-  display: inline-block !important;
+  /* position: relative; */
+  /* display: inline-block !important; */
 }
 
 .dropdown-content {

@@ -148,8 +148,8 @@ class Records extends Component {
 
     //Set table data with renderTableData() to map table headers
     var all_records = 
-      <div className = 'table-responsive' style = {{"maxHeight": "50%", "overflowY" :"auto","overflowX" :"hidden"}}>
-        <table  className = 'table-hover table history' >
+      <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+        <table id='history' className = 'table-hover table' >
             <tbody>
             <tr>
               {/* Maybe make this dynamic? */}
@@ -167,10 +167,11 @@ class Records extends Component {
       </div>;
     //Set table data with renderUserData() to map table headers
     var user_records = 
-      <div>
-        <h2 className="mb-5">Your past analyses</h2>
-        <div className = 'table-responsive history' style = {{"maxHeight": "25%", "overflowY" :"visible","overflowX" :"hidden"}}>
-          <table className = 'table-hover table history' >
+      <>
+      <h2 className="mb-5">Your past analyses</h2>
+        <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+          
+        <table id='history' className = 'table-hover table' >
               <tbody>
               <tr>
                 <th>Platform</th>
@@ -184,7 +185,7 @@ class Records extends Component {
               </tbody>
           </table>
         </div>
-      </div>;
+      </>;
 
     let btns;
     if (this.state.startPage === 1) {

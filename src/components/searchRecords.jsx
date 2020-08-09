@@ -125,30 +125,31 @@ class SearchRecords extends Component {
         return(
             //More HTML Codes for dropdown selection and Popup Modal
             <div>
-            <div className="input-group">
+            <div className="input-group ">
                     <input type="text" name="search" className="form-control" 
                            placeholder="Search for past analysed records!" 
+                           style = {{"minWidth": "70%" }}
                            onChange={(e) => this.inputChangeHandler.call(this, e)} 
                            value={this.state.search} 
                     />
-                    <select className = "form-control" style = {{"maxWidth" : "20%"}} id="dropDown" onClick = {this.onPlatformSelect}>
+                    <select className = "form-control" style = {{"minWidth" : "30%"}} id="dropDown" onClick = {this.onPlatformSelect}>
                         <option className="dropdown-item" value="All" 
-                           onChange={(e) => this.inputChangeHandler.call(this, e)} >All</option>
+                           onClick = {this.onPlatformSelect} >All</option>
                         <option className="dropdown-item" value="Facebook"
-                           onChange={(e) => this.inputChangeHandler.call(this, e)} >Facebook</option>
+                           onClick = {this.onPlatformSelect} >Facebook</option>
                         <option className="dropdown-item" value="Twitter"
-                           onChange={(e) => this.inputChangeHandler.call(this, e)} >Twitter</option>
+                            onClick = {this.onPlatformSelect} >Twitter</option>
                         <option className="dropdown-item" value="Instagram"
-                           onChange={(e) => this.inputChangeHandler.call(this, e)} >Instagram</option>
+                           onClick = {this.onPlatformSelect} >Instagram</option>
                         <option className="dropdown-item" value="LinkedIn"
-                           onChange={(e) => this.inputChangeHandler.call(this, e)} >LinkedIn</option>
+                            onClick = {this.onPlatformSelect} >LinkedIn</option>
                         <option className="dropdown-item" value="User"
-                           onChange={(e) => this.inputChangeHandler.call(this, e)} >User</option>
+                            onClick = {this.onPlatformSelect} >User</option>
                     </select>
                     
                 <div>
                     <Popup modal
-                       contentStyle = {{ "maxWidth": "70%", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "textAlign": "center" } }
+                       contentStyle = {{ "maxWidth": "80%", "maxHeight": "80%", "overflowY" :"auto","overflowX" :"hidden", "width": "80%", "textAlign": "center" } }
                        trigger= {<span><button type="submit" className = "btn btn-primary" onClick = {this.formHandler.bind(this)}><i className="fa fa-search"></i></button></span> } >
                         {close => ( 
                             <>

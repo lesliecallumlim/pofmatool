@@ -196,7 +196,6 @@ class Search extends Component {
         return(
             <div>
                 <div className="input-group">
-                        {/* TODO: Add validation of the link */}
                         <input type="text" name="search" className="form-control" placeholder="Validate your results today!" onChange={(e) => this.inputChangeHandler.call(this, e)} value={this.state.search} />
                     <div>
                     <Popup modal

@@ -135,8 +135,8 @@ class Records extends Component {
 
     //TODO: Rewrite this hot garbage
     var all_records = 
-      <div className = 'table-responsive'>
-        <table  className = 'table-hover table history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+      <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+        <table id='history' className = 'table-hover table' >
             <tbody>
             <tr>
               {/* Maybe make this dynamic? */}
@@ -156,8 +156,8 @@ class Records extends Component {
     var user_records = 
       <div>
         <h2 className="mb-5">Your past analyses</h2>
-        <div className = 'table-responsive history'>
-          <table className = 'table-hover table history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+        <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+        <table id='history' className = 'table-hover table' >
               <tbody>
               <tr>
                 <th>Platform</th>

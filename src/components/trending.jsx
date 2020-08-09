@@ -56,7 +56,7 @@ class Trending extends Component {
       return <p>Loading ...</p>;
     }
     var trending_all = 
-      <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"hidden"}}>
+      <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
         <table id='history' className = 'table-hover table' >
             <tbody>
             <tr>

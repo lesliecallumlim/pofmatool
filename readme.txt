@@ -7,7 +7,15 @@ Project is managed through the yarn package manager
 To build the react files
 - yarn build
 
+Note that the environment has only been tested in Ubuntu 20.04 LTS,
+hence there may be times where the platform may not be deployed proper
+in other environments. 
+
 Paths and source code for the key files would be:
+-------------------------------------------------
+Dependencies
+-------------------------------------------------
+./startup_packages.txt
 --------------------------------------------------
 Frontend
 --------------------------------------------------

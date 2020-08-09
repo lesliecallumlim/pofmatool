@@ -154,9 +154,10 @@ class Records extends Component {
       </div>;
 
     var user_records = 
-      <div>
-        <h2 className="mb-5">Your past analyses</h2>
+      <>
+      <h2 className="mb-5">Your past analyses</h2>
         <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+          
         <table id='history' className = 'table-hover table' >
               <tbody>
               <tr>
@@ -171,7 +172,7 @@ class Records extends Component {
               </tbody>
           </table>
         </div>
-      </div>;
+      </>;
 
     let btns;
     if (this.state.startPage === 1) {

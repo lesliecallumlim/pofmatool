@@ -1,6 +1,10 @@
+/**
+ * Component to display history (Past Analyses) for both User specific, and all users
+ */
 import React, {Component} from 'react';
 import axios from 'axios';
 
+//Initialize states with empty/null values
 class Records extends Component {
   constructor(props) {
     super(props);
@@ -18,8 +22,10 @@ class Records extends Component {
     };
   }
 
+  //Function to get all Users's past searches
   async loadRecords() {
     this.setState({isLoading : true});
+    //Perform a GET Request to api endpoint /api/history and set data states with response
     try {
       const result = await axios.get('/api/history', {params: {start: this.state.startPage}});
       this.setState({ all_data : result.data.results, isLoading: false, startPage: this.state.startPage});
@@ -35,15 +41,21 @@ class Records extends Component {
       }
   }
 
+  /**
+   * Function to get Specific Users's past searches based on JWT Token
+   * that contains the user details in the payload
+  */
   async loadUserRecords() {
     const token = localStorage.getItem('token');
     this.setState({isLoading : true});
     try {
       if (token !== null) {
+        //Passing JWT token into header for POST request
         const config = {
             headers: { 'Authorization': `Bearer ${token}` },
             params: {start: this.state.startPageForUserSubmitted},
         }
+        //Perform a GET Request to api endpoint /api/history and set data states with response
         var user_result = await axios.get('/api/submitted', config);
         this.setState({ user_data : user_result.data.past_submissions, 
                         isLoading: false,
@@ -63,6 +75,7 @@ class Records extends Component {
     }
   }
    
+  //Calling the 2 functions to get the all user, and user specific records
   componentDidMount() {
     this.loadRecords()
     this.loadUserRecords()
@@ -87,7 +100,7 @@ class Records extends Component {
     }
   }
 
-
+  //Method to map state data into table fields for all user history
   renderTableData() {
     return this.state.all_data.map((all_data) => {
        const { date_added, fraud, id, platform, sentiment, fraud_probability, url, username_submitted} = all_data //destructuring
@@ -104,7 +117,7 @@ class Records extends Component {
        )
     })
   }
-
+  //Method to map state data into table fields for user specific history
   renderUserData() {
     return this.state.user_data.map((user_data ) => {
        const { date_added, fraud, id, platform, sentiment, fraud_probability, url, username_submitted} = user_data    //destructuring
@@ -121,7 +134,7 @@ class Records extends Component {
        )
     })
   }
-
+  //Method to render the component that calls inner methods renderTableData() and renderUserData()
   render() {
     const { isLoading, error } = this.state;
 
@@ -133,7 +146,7 @@ class Records extends Component {
       return <p>Loading ...</p>;
     }
 
-    //TODO: Rewrite this hot garbage
+    //Set table data with renderTableData() to map table headers
     var all_records = 
       <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
         <table id='history' className = 'table-hover table' >
@@ -152,7 +165,7 @@ class Records extends Component {
             </tbody>        
         </table>
       </div>;
-
+    //Set table data with renderUserData() to map table headers
     var user_records = 
       <>
       <h2 className="mb-5">Your past analyses</h2>

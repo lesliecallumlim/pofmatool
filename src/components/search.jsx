@@ -1,10 +1,17 @@
+/**
+ * Component to display the search bar whereby users can enter a URL 
+ * on the search bar to perform a rumor check.
+ */
+
 import React, { Component } from 'react';
+//Utilize spinner library as a loading visual while search function runs in the background
 import Spinner from 'react-bootstrap/Spinner'
 import axios from 'axios';
 import './../App.css';
+//Utilize reactjs-pop library for the pre-built popup visual
 import Popup from "reactjs-popup";
 
-
+//Initialize states with empty/null values
 class Search extends Component {
     constructor(props) {
         super(props);
@@ -24,19 +31,24 @@ class Search extends Component {
         }
     }
 
+    //Setting the search state to the value of the search button
+    //which then triggers the formhandler
     inputChangeHandler(e) {
         this.setState({search: e.target.value });
     }
 
+    //Function to close the popup and re-render the component on the App.js screen
     onBtnClick(){	
         this.setState({modalClosed: true});	
         this.props.rerenderParentCallback();	
     }
-
+    
+    //Function that calls the backend api to perform the rumor check in the backfround
     formHandler(e) {
         let currentComponent = this;
         currentComponent.setState({loading: true});
         e.preventDefault();
+        //Getting token from local storage
         const token = localStorage.getItem('token');
         var auth;
         if (token == null) { auth = ""; }
@@ -45,6 +57,7 @@ class Search extends Component {
             currentComponent.setState({token: token}) 
         }
 
+        //Passing JWT token into header for POST request
         const config = {
             headers: { 
                 'Content-Type': 'application/json',
@@ -55,7 +68,10 @@ class Search extends Component {
         };
 
         const formFields = this.state;
+        //Perform a post request to API endpoint /api/evaluate with the state data as
+        //JSON payload which will have a response of the rumor detection result.
         axios.post('/api/evaluate', formFields, config)
+            //Setting the state data and results data from the response received from the API
             .then(function(response) {
                 const _results = response.data;
                 currentComponent.setState({loading: false})
@@ -72,24 +88,28 @@ class Search extends Component {
             });
     }
 
+    //Function that allows user to provide feedback after performing the rumor check
     async addFeedback(e) {
         var auth;
         var currentComponent = this;
+        //Checking for JWT token
         if(this.state.token === ''){ auth = ""; }
         else { auth = `Bearer ${this.state.token}` }
 
         const searchID = this.state.searchID;
+        //Passing JWT token into header for POST request
         const config = {
             headers: { 
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
-                // Authorization: `${auth}`
                 Authorization: `Bearer ${this.state.token}` 
         }};
+        //Setting JSON payload with user's specified data in the feedback field
         const params = {"feedback_string": e.target.value, "id": searchID};
+        //Perform POST request to API endpoint /api/provideFeedback with JWT header and JSON payload data
         axios.post('/api/provideFeedback', params, config)
             .then(function(response) {
-                // const _results = response.data;
+                //Setting state data with response's feedback data.
                 currentComponent.setState({feedback_data: response.data.message});
             })
             .catch(function(error) {
@@ -97,6 +117,7 @@ class Search extends Component {
             });
     }
 
+    //Render the search feature component
     render() {
         let content;
         if (this.state.results !== "") {
@@ -105,7 +126,8 @@ class Search extends Component {
             const fraud_colors = { 'Real' : 'success', 'Fake' : 'danger' };
 
             if (this.state.sentiment !== '') {
-            content = 
+            //HTML codes for Popup Modal during search and after search for feedback
+                content = 
             <div>
                 <hr></hr>
                     <h3 >Your result</h3> 
@@ -145,7 +167,7 @@ class Search extends Component {
             </div>
             }
             else {
-                content =  //TODO: Rewrite this - the elements will not render proper if appended to the string, tenaries don't work because of the jsx adjacent element issues
+                content =  
                 <div>
                     <hr></hr>
                         <h3 >Your result</h3> 

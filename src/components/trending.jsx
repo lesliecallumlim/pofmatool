@@ -1,5 +1,10 @@
+/**
+ * Component to display the trending searches on the platform.
+ */
 import React, {Component} from 'react';
 import axios from 'axios';
+
+//Initialize states with empty/null values
 
 class Trending extends Component {
   constructor(props) {
@@ -11,10 +16,11 @@ class Trending extends Component {
       refresh: false,
     };
   }
- 
+  //Function that is triggered when component is rendered onto mainpage (App.js)
   async componentDidMount() {
     this.setState({isLoading : true});
     try {
+      //Perform GET Request to API endpoint /api/trending and set trending_data in state with response data
       const result = await axios.get('/api/trending');
       this.setState({ trending_data : result.data.results, isLoading: false});
     }
@@ -22,7 +28,7 @@ class Trending extends Component {
       this.setState({ error, isLoading: false});
     }
   }
-
+  //Function to map and populate data from trending_data into the trending table
   renderTableData() {
     return this.state.trending_data.map((trending_data) => {
        const { id, platform, url, sentiment, fraud, fraud_probability, date_added, count} = trending_data //destructuring
@@ -44,7 +50,7 @@ class Trending extends Component {
     this.setState ({ refresh: true });
     this.renderTableData();
   }
-
+  //Render the trending component
   render() {
     const { isLoading, error } = this.state;
 
@@ -56,7 +62,8 @@ class Trending extends Component {
       return <p>Loading ...</p>;
     }
     var trending_all = 
-      <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"auto"}}>
+    //HTML codes for table header
+      <div className = 'table-responsive history' style = {{"maxHeight": "100%", "overflowY" :"auto","overflowX" :"hidden"}}>
         <table id='history' className = 'table-hover table' >
             <tbody>
             <tr>

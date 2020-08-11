@@ -268,7 +268,7 @@ def delete_user_records():
         return bad_request('Please provide an ID!')
     if get_jwt_identity()['is_admin'] == 'admin':
         user_to_delete = User.delete_user_records(id = user_records['id'])
-        if get_user(id = user_records['id']) is None:
+        if User.get_user(id = user_records['id']) is None:
            response = make_response(jsonify(message = "Success!"), 201)
            return response
         else: 

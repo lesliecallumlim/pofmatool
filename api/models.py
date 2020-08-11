@@ -1,10 +1,10 @@
 # SQLLite model
 from api import db
 from datetime import datetime, timedelta
-from sqlalchemy import and_, or_, false, true, func, case
-from sqlalchemy.inspection import inspect
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from sqlalchemy import and_, or_, false, true, func, case #auxiliary functions 
+from sqlalchemy.inspection import inspect 
+from werkzeug.security import generate_password_hash, check_password_hash #password hashing
+from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt) #jwt tokens
 from flask import jsonify 
 from datetime import date 
 import re
@@ -146,12 +146,6 @@ class User(db.Model, Serializer):
         regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
         return re.search(regex, email)
 
-    #@classmethod
-    def add_user(username, email, password):
-        _user = User(username = username, email = email, password_hash = generate_password_hash(password))
-        db.session.add(_user)
-        db.session.commit()
-
     @classmethod
     def get_users(cls, records = 30):
         # This module returns the number of records. The default number of users would be 30. 
@@ -174,7 +168,7 @@ class User(db.Model, Serializer):
         # Returns None if there are no records found. Again, records with is_banned = True will not be shown. 
         # The id variable is required to identify the specific user id. 
         records = cls.query.filter(and_(cls.is_banned != True, cls.id == id)).first()
-        return User.serialize_list(records)
+        return records
     
     @classmethod
     def verify_identity(cls, username, password):

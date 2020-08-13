@@ -108,13 +108,13 @@ class UserPanel extends Component {
             //HTML Codes for Reggistration form
             <div>
                 <Form className =  "registrationForm">
-                    <Field type="username" name="username" placeHolder = "Your username." className = "inputFields"/>
+                    <Field type="username" name="username" placeHolder = "Your username." autocomplete="off" className = "inputFields"/>
                     <ErrorMessage name="username" component="span"/>
-                    <Field type="email" name="email" placeHolder = "Your email." className = "inputFields"/>
+                    <Field type="email" name="email" placeHolder = "Your email." autocomplete="off" className = "inputFields"/>
                     <ErrorMessage name="email" component="div"/>
-                    <Field type="password" placeHolder = "Your password." name = "password" className = "inputFields" />
+                    <Field type="password" placeHolder = "Your password." autocomplete="off" name = "password" className = "inputFields" />
                     <ErrorMessage name="password" component="div"/>
-                    <Field type="password" placeHolder = "Verify password." name = "verify_password" className = "inputFields" />
+                    <Field type="password" placeHolder = "Verify password." autocomplete="off" name = "verify_password" className = "inputFields" />
                     <Popup modal 
                         // contentStyle = {{ "maxWidth": "500px", "maxHeight": "100%", "overflowY" :"auto","overflowX" :"hidden", "width": "100%", "text-align": "center", "border-radius": "20px", } }
                         trigger = {<button type="submit" className = "inputFields submit" disabled={!(isValid && dirty)}>Submit</button>}>
@@ -160,9 +160,9 @@ class UserPanel extends Component {
             {({ isValid, dirty }) => (
             <div>
                 <Form className =  "registrationForm"> 
-                    <Field type="username" name="username" placeHolder = "Your username." className = "inputFields"/>
+                    <Field type="username" name="username" placeHolder = "Your username." autocomplete="off" className = "inputFields"/>
                     <ErrorMessage name="username" component="div"/>
-                    <Field type="password" placeHolder = "Your password." name = "password" className = "inputFields" />
+                    <Field type="password" placeHolder = "Your password." name = "password" autocomplete="off" className = "inputFields" />
                     <ErrorMessage name="password" component="div"/>
                     <Popup modal 
                        trigger = {<button type="submit" className = "inputFields submit" disabled={!(isValid && dirty)}>Submit</button>}>

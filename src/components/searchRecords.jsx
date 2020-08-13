@@ -128,11 +128,10 @@ class SearchRecords extends Component {
             <div className="input-group ">
                     <input type="text" name="search" className="form-control" 
                            placeholder="Search for past analysed records!" 
-                           style = {{"minWidth": "70%" }}
                            onChange={(e) => this.inputChangeHandler.call(this, e)} 
                            value={this.state.search} 
                     />
-                    <select className = "form-control" style = {{"minWidth" : "30%"}} id="dropDown" onClick = {this.onPlatformSelect}>
+                    <select className = "form-control" id="dropDown" onClick = {this.onPlatformSelect}>
                         <option className="dropdown-item" value="All" 
                            onClick = {this.onPlatformSelect} >All</option>
                         <option className="dropdown-item" value="Facebook"

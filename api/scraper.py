@@ -12,7 +12,9 @@ def clean_text(text):
     # through regex, and outputs them in lowercase format.
     REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]\|@,;]')
     BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
-    # nltk.download('stopwords')
+    nltk.download('stopwords')
+    nltk.download('averaged_perceptron_tagger')
+    nltk.download('wordnet')
     STOPWORDS = set(stopwords.words('english'))
 
     text = text.lower() # lowercase text
@@ -65,6 +67,7 @@ def scraper(url):
             contents["is_valid"] = True if contents["text"] else False      
         except Exception as e: 
             contents["text"] = 'Invalid platform link!'
+            print(e)
         # End chromedriver session
         finally:
             driver.quit()

@@ -59,7 +59,7 @@ def scraper(url):
                 elements = driver.find_element_by_xpath('//*[@id="react-root"]/div/div/div[2]/main/div/div/div/div[1]/div/div/div/section/div/div/div[1]/div/div/article/div/div/div/div[3]/div[1]/div/span').text
                 platform = 'Twitter'
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{linkedin})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
-                time.sleep(4)
+                time.sleep(10)
                 elements = driver.find_element_by_xpath('/html/body/main/div[2]/div/div/p').text
                 platform = 'LinkedIn'
             contents["text"] = clean_text(elements)

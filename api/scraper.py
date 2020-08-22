@@ -50,7 +50,7 @@ def scraper(url):
                 elements = driver.find_element_by_xpath('//div[@data-testid="post_message"]').text
                 platform = 'Facebook'
             elif re.search(fr'^(?:https?:\/\/)?(?:www\.|m\.|mobile\.|touch\.|mbasic\.)?(?:{instagram})\/(?!$)(?:(?:\w)*#!\/)?(?:pages\/)?(?:photo\.php\?fbid=)?(?:[\w\-]*\/)*?(?:\/)?(?:profile\.php\?id=)?([^\/?&\s]*)(?:\/|&|\?)?.*$', url):
-                time.sleep(4)       
+                time.sleep(15)       
                 driver.set_window_size(960, 540, driver.window_handles[0])
                 elements = driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/article/div[3]/div[1]/ul/div/li/div/div/div[2]/span').text
                 platform = 'Instagram'
